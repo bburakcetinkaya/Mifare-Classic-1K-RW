@@ -2296,7 +2296,7 @@
       <string>Mifare PICC</string>
      </property>
     </widget>
-    <widget class="QLineEdit" name="lineEdit_2">
+    <widget class="QLineEdit" name="UID">
      <property name="geometry">
       <rect>
        <x>40</x>
@@ -2309,7 +2309,7 @@
       <bool>true</bool>
      </property>
     </widget>
-    <widget class="QPushButton" name="pushButton_2">
+    <widget class="QPushButton" name="ConnectUID">
      <property name="geometry">
       <rect>
        <x>180</x>
@@ -2319,7 +2319,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>SELECT</string>
+      <string>Connect</string>
      </property>
     </widget>
     <widget class="QLabel" name="label_2">
@@ -2332,7 +2332,7 @@
       </rect>
      </property>
      <property name="text">
-      <string>ID: </string>
+      <string>UID: </string>
      </property>
     </widget>
    </widget>
@@ -2342,8 +2342,8 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_3"/>
   <buttongroup name="buttonGroup"/>
  </buttongroups>
