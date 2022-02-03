@@ -8,20 +8,23 @@ CONFIG += c++17
 # In order to do so, uncomment the following line.
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
+
 SOURCES += \
-    apducommand.cpp \
-    connect.cpp \
-    main.cpp \
-    mainwindow.cpp
+    Sources/apducommand.cpp \
+    Sources/connect.cpp \
+    Sources/main.cpp \
+    Sources/mainwindow.cpp
+
 
 HEADERS += \
-    apducommand.h \
-    commands.h \
-    connect.h \
-    mainwindow.h
+    Headers/apducommand.h \
+    Headers/commands.h \
+    Headers/connect.h \
+    Headers/mainwindow.h
+
 
 FORMS += \
-    mainwindow.ui
+    Forms/mainwindow.ui
 
 LIBS += -lwinscard -lz
 

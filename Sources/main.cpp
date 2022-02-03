@@ -1,5 +1,5 @@
-#include "mainwindow.h"
-#include "connect.h"
+#include "Headers\mainwindow.h"
+#include "Headers\connect.h"
 
 #include <QApplication>
 

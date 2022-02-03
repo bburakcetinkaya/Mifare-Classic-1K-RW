@@ -1,5 +1,5 @@
-#include "connect.h"
-#include "commands.h"
+#include "Headers\connect.h"
+#include "Headers\commands.h"
 #include <winscard.h>
 #include <cstdio>
 #include <QByteArray>

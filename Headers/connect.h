@@ -1,7 +1,7 @@
 #ifndef CONNECT_H
 #define CONNECT_H
 #include <winscard.h>
-#include <commands.h>
+#include <Headers\commands.h>
 #include <QString>
 
 enum choice

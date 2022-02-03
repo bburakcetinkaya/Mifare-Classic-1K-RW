@@ -1,7 +1,7 @@
-#include "mainwindow.h"
-#include "connect.h"
+#include "Headers\mainwindow.h"
+#include "Headers\connect.h"
 #include "ui_mainwindow.h"
-#include "commands.h"
+#include "Headers\commands.h"
 #include <QString>
 #include <QDebug>
 
