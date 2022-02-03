@@ -14,9 +14,9 @@ class SCardConnection
 {
 public:
     static SCardConnection* getInstance();
-    void setEstablishContext();
-    LONG getEstablishContext();
-    void setReaderLists(bool choice);
+    LONG establishContext();
+
+    void setReaderLists(const bool choice);
     LPTSTR getReaderLists();
     void connectCard();
     void setCardUID();

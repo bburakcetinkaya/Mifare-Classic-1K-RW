@@ -17,14 +17,41 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
 
-public slots:
-    //void on_connectPressed();
 private slots:
 
 
     void on_connectReader_clicked();
-
     void on_ConnectUID_clicked();
+
+    void on_authWithKeyA_clicked();
+
+    void on_keyA5_textChanged();
+
+    void on_keyA4_textChanged();
+
+    void on_keyA3_textChanged();
+
+    void on_keyA2_textChanged();
+
+    void on_keyA1_textChanged();
+
+    void on_keyA0_textChanged();
+
+    void on_copyToKeyB_clicked();
+
+    void on_keyB5_textChanged();
+
+    void on_keyB4_textChanged();
+
+    void on_keyB3_textChanged();
+
+    void on_keyB2_textChanged();
+
+    void on_keyB1_textChanged();
+
+    void on_keyB0_textChanged();
+
+    void on_copyToKeyA_clicked();
 
 signals:
    //    void connectedReaderChanged(const QString &text);
