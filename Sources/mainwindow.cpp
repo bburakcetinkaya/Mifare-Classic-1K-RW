@@ -2,6 +2,8 @@
 #include "Headers\connect.h"
 #include "ui_mainwindow.h"
 #include "Headers\commands.h"
+#include "Headers/scardoperations.h"
+#include "Headers/apducommand.h"
 #include <QString>
 #include <QDebug>
 
@@ -70,49 +72,51 @@ void MainWindow::on_ConnectUID_clicked()
 
 void MainWindow::on_authWithKeyA_clicked()
 {
-    QString block = ui->blockSelect->text();
-    QString sector = ui->sectorSelect->text();
-    qDebug() << block << " " << sector;
-    QByteArray _keyA;
-    _keyA.append ( (ui->keyA5->toPlainText()).toLocal8Bit());
-    _keyA.append ( (ui->keyA4->toPlainText()).toLocal8Bit() );
-    _keyA.append ( (ui->keyA3->toPlainText()).toLocal8Bit() );
-    _keyA.append ( (ui->keyA2->toPlainText()).toLocal8Bit() );
-    _keyA.append ( (ui->keyA1->toPlainText()).toLocal8Bit() );
-    _keyA.append ( (ui->keyA0->toPlainText()).toLocal8Bit() );
+//    QString blockStr = (ui->blockSelect->text()).toUtf8();
+//    QByteArray blockByte = QByteArray::fromHex(blockStr.toLatin1());
+//    BYTE block = blockByte[0];
+//    printf("%X ",blockByte[0]);
 
 
-    qDebug() << "_keyA " << _keyA;
+//    BYTE sector ;
+
+//    qDebug() << block << blockByte ;
+    QString _keyA;
+    _keyA.append ( (ui->keyA5->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA4->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA3->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA2->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA1->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA0->toPlainText()).toUtf8() );
     BYTE keyA[KEY_SIZE];
-
-    qDebug() << "length: " << _keyA.size() << " , byte length: " << sizeof (_keyA);
-
-
-    for(int i = 0; i<KEY_SIZE; i++)
+    QByteArray _keyABytes = QByteArray::fromHex(_keyA.toLatin1());
+    for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
     {
-       keyA[i] = _keyA.at(i*2);
-       qDebug() << "xxxxxx: " << keyA[i];
+        keyA[i] = _keyABytes[i];
+         printf("%X ", keyA[i]);
     }
+    SCardConnection* connect = SCardConnection::getInstance();
+    SCardOperations scrdops{};
+    APDUCommand apdu{};
 
+   // BYTE* keyA = scrdops.getKeyA();
+    BYTE block = 0x02;
 
+    scrdops.setKeyA(_keyA);
+    apdu.setAuthCommand(block,  scrdops.getKeyA() , KEYA_SELECT);
+    connect->authenticate(apdu.getAuthCommand());
 
-//    keyA = strcpy((char*)keyA,_keyA.toStdString().c_str());
-//    keyA = (BYTE)_keyA.toStdString().c_str();
-    //keyA = QByteArray(_keyA,KEY_SIZE);
-    //keyA = reinterpret_cast<byte*>(_keyA.data());
-//    for(int i = 0; i<KEY_SIZE; i++)
-//    {
-//       qDebug() << (keyA[i]);
-//    }
-    qDebug() << sizeof(_keyA);
-    qDebug() << "keyA " << *keyA;
-    qDebug() << "keyA " << *(keyA+1);
-    qDebug() << "keyA " << *(keyA+2);
-    qDebug() << "keyA " << *keyA;
-    qDebug() << "keyA " << *keyA;
-    qDebug() << "keyA " << *keyA;
 }
 
+void MainWindow::on_readBlock_clicked()
+{
+    SCardConnection* connect = SCardConnection::getInstance();
+    APDUCommand apdu{};
+    BYTE block = 0x02;
+    apdu.setReadCommand(block);
+    connect->readDataBlock(apdu.getReadCommand());
+
+}
 
 void MainWindow::on_keyA5_textChanged()
 {
@@ -457,5 +461,27 @@ void MainWindow::on_copyToKeyA_clicked()
     ui->keyA3->setPlainText(ui->keyB3->toPlainText());
     ui->keyA4->setPlainText(ui->keyB4->toPlainText());
     ui->keyA5->setPlainText(ui->keyB5->toPlainText());
+}
+
+
+void MainWindow::on_factoryKeyA_clicked()
+{
+    ui->keyA0->setPlainText("FF");
+    ui->keyA1->setPlainText("FF");
+    ui->keyA2->setPlainText("FF");
+    ui->keyA3->setPlainText("FF");
+    ui->keyA4->setPlainText("FF");
+    ui->keyA5->setPlainText("FF");
+}
+
+
+void MainWindow::on_factoryKeyB_clicked()
+{
+    ui->keyB0->setPlainText("FF");
+    ui->keyB1->setPlainText("FF");
+    ui->keyB2->setPlainText("FF");
+    ui->keyB3->setPlainText("FF");
+    ui->keyB4->setPlainText("FF");
+    ui->keyB5->setPlainText("FF");
 }
 

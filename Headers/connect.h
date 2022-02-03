@@ -21,6 +21,13 @@ public:
     void connectCard();
     void setCardUID();
     QString getCardUID();
+    BYTE getpbRecv();
+    BYTE getpbSend();
+    DWORD getcbRecv();
+    DWORD getcbSend();
+    void authenticate(BYTE *authCommand);
+    void readDataBlock(BYTE *readCommand);
+
 
 
 private:
@@ -37,7 +44,6 @@ private:
     BYTE            m_cardUID[UID_SIZE];
     BYTE            m_pbSend[MAX_APDU_SIZE];
     BYTE            m_pbRecv[MAX_APDU_SIZE];
-
 };
 
 #endif // CONNECT_H

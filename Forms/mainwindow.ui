@@ -217,7 +217,7 @@
          <string>Change</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_27">
+       <widget class="QPushButton" name="factoryKeyB">
         <property name="geometry">
          <rect>
           <x>180</x>
@@ -418,7 +418,7 @@
          <string>Change</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_34">
+       <widget class="QPushButton" name="factoryKeyA">
         <property name="geometry">
          <rect>
           <x>180</x>
@@ -554,7 +554,7 @@
        <property name="frameShadow">
         <enum>QFrame::Sunken</enum>
        </property>
-       <widget class="QPushButton" name="pushButton_8">
+       <widget class="QPushButton" name="readBlock">
         <property name="geometry">
          <rect>
           <x>10</x>
@@ -2348,9 +2348,9 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_3"/>
  </buttongroups>
 </ui>

@@ -53,6 +53,12 @@ private slots:
 
     void on_copyToKeyA_clicked();
 
+    void on_factoryKeyA_clicked();
+
+    void on_factoryKeyB_clicked();
+
+    void on_readBlock_clicked();
+
 signals:
    //    void connectedReaderChanged(const QString &text);
 

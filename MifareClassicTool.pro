@@ -13,14 +13,16 @@ SOURCES += \
     Sources/apducommand.cpp \
     Sources/connect.cpp \
     Sources/main.cpp \
-    Sources/mainwindow.cpp
+    Sources/mainwindow.cpp \
+    Sources/scardoperations.cpp
 
 
 HEADERS += \
     Headers/apducommand.h \
     Headers/commands.h \
     Headers/connect.h \
-    Headers/mainwindow.h
+    Headers/mainwindow.h \
+    Headers/scardoperations.h
 
 
 FORMS += \

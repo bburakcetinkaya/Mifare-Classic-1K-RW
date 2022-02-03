@@ -86,3 +86,53 @@ QString SCardConnection::getCardUID()
     qDebug() << UIDstring;
     return UIDstring;
 }
+void SCardConnection::authenticate(BYTE *authCommand)
+{
+   BYTE command[AUTHCOMMAND_SIZE];
+   for(int i = 0; i<static_cast<int>(AUTHCOMMAND_SIZE); i++)
+       command[i] = *(authCommand+i);
+   memcpy(m_pbSend, command, AUTHCOMMAND_SIZE);
+   m_cbSend = AUTHCOMMAND_SIZE;
+   m_cbRecv = MAX_APDU_SIZE;
+   if ((SCardTransmit(m_hCard, SCARD_PCI_T1, m_pbSend, m_cbSend, NULL, m_pbRecv, &m_cbRecv)) != SCARD_S_SUCCESS)
+   {
+        printf("fuck");
+       return;
+   }
+   else printf("authentication of sector %d is completed \n",(command[7])/4);
+
+}
+void SCardConnection::readDataBlock(BYTE *readCommand)
+{
+    BYTE command[READCOMMAND_SIZE];
+    for(int i = 0; i<static_cast<int>(READCOMMAND_SIZE); i++)
+        command[i] = *(readCommand+i);
+    memcpy(m_pbSend, command, READCOMMAND_SIZE);
+    m_cbSend = READCOMMAND_SIZE;
+    m_cbRecv = MAX_APDU_SIZE;
+    if (SCardTransmit(m_hCard, SCARD_PCI_T1, m_pbSend, m_cbSend, NULL, m_pbRecv, &m_cbRecv) != SCARD_S_SUCCESS)
+        return;
+
+    printf("\nBlock 02: ");
+    for (DWORD i = 0 ; i < m_cbRecv; i++) //-2
+    {
+        printf("%02X ", m_pbRecv[i]);
+
+    }
+}
+BYTE SCardConnection::getpbRecv()
+{
+    return *m_pbRecv;
+}
+BYTE SCardConnection::getpbSend()
+{
+    return *m_pbSend;
+}
+DWORD SCardConnection::getcbRecv()
+{
+    return m_cbRecv;
+}
+DWORD SCardConnection::getcbSend()
+{
+    return m_cbSend;
+}
