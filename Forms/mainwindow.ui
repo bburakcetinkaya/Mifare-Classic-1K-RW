@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="Operations">
      <property name="autoFillBackground">
@@ -536,7 +536,7 @@
         </property>
        </widget>
       </widget>
-      <widget class="QFrame" name="frame">
+      <widget class="QFrame" name="frameRW">
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -593,7 +593,7 @@
          <string>TEXT</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_12">
+       <widget class="QPushButton" name="RWClear">
         <property name="geometry">
          <rect>
           <x>660</x>
@@ -654,6 +654,12 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -666,6 +672,12 @@
           <width>33</width>
           <height>29</height>
          </rect>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
@@ -680,6 +692,12 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -692,6 +710,12 @@
           <width>33</width>
           <height>29</height>
          </rect>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
@@ -706,6 +730,12 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -718,6 +748,12 @@
           <width>32</width>
           <height>29</height>
          </rect>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
@@ -732,6 +768,12 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -744,6 +786,12 @@
           <width>33</width>
           <height>29</height>
          </rect>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
@@ -758,6 +806,12 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -770,6 +824,12 @@
           <width>33</width>
           <height>29</height>
          </rect>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
@@ -784,6 +844,12 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -796,6 +862,12 @@
           <width>33</width>
           <height>29</height>
          </rect>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
@@ -810,6 +882,12 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -822,6 +900,12 @@
           <width>33</width>
           <height>29</height>
          </rect>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
@@ -836,6 +920,12 @@
           <height>29</height>
          </rect>
         </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -848,6 +938,12 @@
           <width>33</width>
           <height>29</height>
          </rect>
+        </property>
+        <property name="verticalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
+        </property>
+        <property name="horizontalScrollBarPolicy">
+         <enum>Qt::ScrollBarAlwaysOff</enum>
         </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
@@ -1111,14 +1207,14 @@
       </widget>
      </widget>
     </widget>
-    <widget class="QWidget" name="Dump">
+    <widget class="RAW" name="RAW">
      <property name="autoFillBackground">
       <bool>true</bool>
      </property>
      <attribute name="title">
       <string>RAW</string>
      </attribute>
-     <widget class="QFrame" name="frame_7">
+     <widget class="QFrame" name="rawOutherFrame">
       <property name="geometry">
        <rect>
         <x>0</x>
@@ -1136,7 +1232,7 @@
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <widget class="QFrame" name="frame_6">
+      <widget class="QFrame" name="rawUpFrame">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -1164,7 +1260,7 @@
          <string>Using key:</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkBox">
+       <widget class="QCheckBox" name="rawCheckKeyA">
         <property name="geometry">
          <rect>
           <x>80</x>
@@ -1186,7 +1282,7 @@
          <string notr="true">buttonGroup_2</string>
         </attribute>
        </widget>
-       <widget class="QCheckBox" name="checkBox_2">
+       <widget class="QCheckBox" name="rawCheckKeyB">
         <property name="geometry">
          <rect>
           <x>80</x>
@@ -1205,7 +1301,7 @@
          <string notr="true">buttonGroup_2</string>
         </attribute>
        </widget>
-       <widget class="QPushButton" name="pushButton_17">
+       <widget class="QPushButton" name="rawGO">
         <property name="geometry">
          <rect>
           <x>140</x>
@@ -1231,7 +1327,7 @@
          <string>Show as:</string>
         </property>
        </widget>
-       <widget class="QCheckBox" name="checkBox_3">
+       <widget class="QCheckBox" name="rawCheckHex_2">
         <property name="geometry">
          <rect>
           <x>680</x>
@@ -1250,7 +1346,7 @@
          <string notr="true">buttonGroup</string>
         </attribute>
        </widget>
-       <widget class="QCheckBox" name="checkBox_4">
+       <widget class="QCheckBox" name="rawCheckHex">
         <property name="geometry">
          <rect>
           <x>680</x>
@@ -1273,7 +1369,7 @@
         </attribute>
        </widget>
       </widget>
-      <widget class="QTableWidget" name="tableWidget">
+      <widget class="QTableWidget" name="rawDataRead">
        <property name="geometry">
         <rect>
          <x>0</x>
@@ -2358,6 +2454,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>RAW</class>
+   <extends>QWidget</extends>
+   <header location="global">raw.h</header>
+   <container>1</container>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>

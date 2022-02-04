@@ -26,6 +26,9 @@ public:
     DWORD getcbRecv();
     DWORD getcbSend();
 
+    BYTE getBlockNum();
+    void setBlockNum(const QString &blockAsString);
+
     LONG authenticate(BYTE *authCommand);
     QString readDataBlock(BYTE *readCommand);
     LONG loadKey(BYTE *loadCommand);
@@ -46,6 +49,7 @@ private:
     BYTE            m_cardUID[UID_SIZE];
     BYTE            m_pbSend[MAX_APDU_SIZE];
     BYTE            m_pbRecv[MAX_APDU_SIZE];
+    BYTE            m_blockNum;
 };
 
 #endif // CONNECT_H

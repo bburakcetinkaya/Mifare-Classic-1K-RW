@@ -42,7 +42,7 @@ void APDUCommand::setAuthCommand(const BYTE block, const BYTE keySelect, const B
             m_AuthCommand[i] = authCommand[i];
             break;
         case 7:
-            m_AuthCommand[i] = block;
+            m_AuthCommand[i] = (BYTE)block;
             break;
         case 8:
             m_AuthCommand[i] = keySelect;
@@ -51,6 +51,7 @@ void APDUCommand::setAuthCommand(const BYTE block, const BYTE keySelect, const B
             m_AuthCommand[i] = storageAddress;
             break;
          }//0xFF,  0x86,  0x00, 0x00,  0x05,  0x00, 0x00,  0x04, 0x60, 0x00
+    printf("%X ",m_AuthCommand[i]);
     }
 }
 BYTE* APDUCommand::getAuthCommand()
@@ -74,6 +75,7 @@ void APDUCommand::setReadCommand(const BYTE block)
             m_ReadCommand[i] = BLOCK_SIZE;
             break;
          } //0xFF, 0xB0, 0x00, 0x00, 0x10
+        printf("%X ",m_ReadCommand[i]);
 
     }
 

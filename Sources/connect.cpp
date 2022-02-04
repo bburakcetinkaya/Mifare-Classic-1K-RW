@@ -25,6 +25,7 @@ SCardConnection::SCardConnection()
    ,m_cbSend = 0
    ,m_cbRecv = MAX_APDU_SIZE
    ,m_cardUID[UID_SIZE] = {}
+   ,m_blockNum = 0x00
    ,m_pbSend[MAX_APDU_SIZE] = {}
    ,m_pbRecv[MAX_APDU_SIZE] = {} ;
 }
@@ -131,8 +132,21 @@ QString SCardConnection::readDataBlock(BYTE *readCommand)
         QByteArray blockAsByte =  QByteArray(reinterpret_cast<char*>(m_pbRecv), BLOCK_SIZE+RESPONSE_SIZE).toHex(' ').toUpper();
         //QString UID = QString::fromUtf8(m_cardUID);
         QString blockString = QString(blockAsByte).toUpper();
-        qDebug() << blockString;
         return blockString;
+}
+
+void SCardConnection::setBlockNum(const QString &blockAsString)
+{
+    QString blockHexStr;
+    blockHexStr.setNum(blockAsString.toInt(),16);
+    if(blockHexStr.length() %2)   blockHexStr.insert(0,QLatin1String("0"));
+    blockHexStr = blockHexStr.toUpper();
+    QByteArray blockHexByteArray = QByteArray::fromHex(blockHexStr.toLatin1());
+    m_blockNum = blockHexByteArray[0];
+}
+BYTE SCardConnection::getBlockNum()
+{
+    return m_blockNum;
 }
 BYTE SCardConnection::getpbRecv()
 {

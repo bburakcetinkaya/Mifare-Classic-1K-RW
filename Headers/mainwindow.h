@@ -17,13 +17,13 @@ public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
     void setReadOnlyReadBlocks();
-    void applyDataToReadBLocks(const QString &dataString);
+    void applyDataToReadBLocks(const QStringList &dataList);
 
 
 private slots:
 
-
     void on_connectReader_clicked();
+
     void on_ConnectUID_clicked();
 
     void on_authWithKeyA_clicked();
@@ -64,7 +64,11 @@ private slots:
 
     void on_loadTo0A_clicked();
 
-    void on_pushButton_12_clicked();
+    void on_RWClear_clicked();
+
+    void on_R15_textChanged();
+
+    void on_pushButton_17_clicked();
 
 signals:
    //    void connectedReaderChanged(const QString &text);

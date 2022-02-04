@@ -14,6 +14,7 @@ SOURCES += \
     Sources/connect.cpp \
     Sources/main.cpp \
     Sources/mainwindow.cpp \
+    Sources/mainwindowuiedit.cpp \
     Sources/scardoperations.cpp
 
 
