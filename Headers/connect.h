@@ -25,8 +25,10 @@ public:
     BYTE getpbSend();
     DWORD getcbRecv();
     DWORD getcbSend();
-    void authenticate(BYTE *authCommand);
-    void readDataBlock(BYTE *readCommand);
+
+    LONG authenticate(BYTE *authCommand);
+    QString readDataBlock(BYTE *readCommand);
+    LONG loadKey(BYTE *loadCommand);
 
 
 

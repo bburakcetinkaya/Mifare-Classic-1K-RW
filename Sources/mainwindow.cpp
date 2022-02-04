@@ -67,20 +67,44 @@ void MainWindow::on_ConnectUID_clicked()
     ui->UID->setStyleSheet("QLineEdit#UID {font-weight: bold; color : red; }");
     }
 }
+void MainWindow::on_loadTo0A_clicked()
+{
+    QString _keyA;
+    _keyA.append ( (ui->keyA5->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA4->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA3->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA2->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA1->toPlainText()).toUtf8() );
+    _keyA.append ( (ui->keyA0->toPlainText()).toUtf8() );
+    BYTE keyA[KEY_SIZE];
+    QByteArray _keyABytes = QByteArray::fromHex(_keyA.toLatin1());
+    for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
+    {
+        keyA[i] = _keyABytes[i];
+    }
+    SCardConnection* connect = SCardConnection::getInstance();
+    SCardOperations scrdops{};
+    APDUCommand apdu{};
 
+    scrdops.setKeyA(_keyA);
+    BYTE storageAddress = 0x00;
+    apdu.setLoadKeyCommand(scrdops.getKeyA() , storageAddress);
+    if (connect->loadKey(apdu.getLoadKeyCommand()) != SCARD_S_SUCCESS)
+        {
+            ui->statusA->setText("Failed to load key!");
+            ui->statusA->setStyleSheet("QLabel#statusA {font-weight: bold; color : red; }");
+        }
+    else
+        {
+            ui->statusA->setText("Key loaded.");
+            ui->statusA->setStyleSheet("QLabel#statusA {font-weight: bold; color : green; }");
+        }
+
+}
 
 
 void MainWindow::on_authWithKeyA_clicked()
 {
-//    QString blockStr = (ui->blockSelect->text()).toUtf8();
-//    QByteArray blockByte = QByteArray::fromHex(blockStr.toLatin1());
-//    BYTE block = blockByte[0];
-//    printf("%X ",blockByte[0]);
-
-
-//    BYTE sector ;
-
-//    qDebug() << block << blockByte ;
     QString _keyA;
     _keyA.append ( (ui->keyA5->toPlainText()).toUtf8() );
     _keyA.append ( (ui->keyA4->toPlainText()).toUtf8() );
@@ -96,26 +120,51 @@ void MainWindow::on_authWithKeyA_clicked()
          printf("%X ", keyA[i]);
     }
     SCardConnection* connect = SCardConnection::getInstance();
-    SCardOperations scrdops{};
     APDUCommand apdu{};
 
    // BYTE* keyA = scrdops.getKeyA();
-    BYTE block = 0x02;
+    BYTE block = 0x00;
+//const BYTE block, const BYTE keySelect, const BYTE storageAddress
+    apdu.setAuthCommand(block, KEYA_SELECT, 0x00);
 
-    scrdops.setKeyA(_keyA);
-    apdu.setAuthCommand(block,  scrdops.getKeyA() , KEYA_SELECT);
-    connect->authenticate(apdu.getAuthCommand());
-
+    if (connect->authenticate(apdu.getAuthCommand()) != SCARD_S_SUCCESS)
+        {
+            ui->statusA->setText("Failed to authenticate!");
+            ui->statusA->setStyleSheet("QLabel#statusA {font-weight: bold; color : red; }");
+        }
+    else
+        {
+            ui->statusA->setText("Authenticated.");
+            ui->statusA->setStyleSheet("QLabel#statusA {font-weight: bold; color : green; }");
+        }
 }
 
 void MainWindow::on_readBlock_clicked()
 {
+    MainWindow::setReadOnlyReadBlocks();
     SCardConnection* connect = SCardConnection::getInstance();
     APDUCommand apdu{};
-    BYTE block = 0x02;
+    QString recievedData;
+    BYTE block = 0x00;
     apdu.setReadCommand(block);
-    connect->readDataBlock(apdu.getReadCommand());
 
+    recievedData = connect->readDataBlock(apdu.getReadCommand());
+
+
+    if (recievedData.at(BLOCK_SIZE-RESPONSE_SIZE)   != SUCCESS_RESPONSE[0] &&
+        recievedData.at(BLOCK_SIZE-RESPONSE_SIZE+1) != SUCCESS_RESPONSE[1])
+        {
+
+        ui->statusRW->setText("Read successfully.");
+        ui->statusRW->setStyleSheet("QLabel#statusRW {font-weight: bold; color : green; }");
+        MainWindow::applyDataToReadBLocks(recievedData);
+
+        }
+    else
+        {
+        ui->statusRW->setText("Failed to read!");
+        ui->statusRW->setStyleSheet("QLabel#statusRW {font-weight: bold; color : red; }");
+        }
 }
 
 void MainWindow::on_keyA5_textChanged()
@@ -483,5 +532,71 @@ void MainWindow::on_factoryKeyB_clicked()
     ui->keyB3->setPlainText("FF");
     ui->keyB4->setPlainText("FF");
     ui->keyB5->setPlainText("FF");
+}
+void MainWindow::setReadOnlyReadBlocks()
+{
+    ui->R15->setReadOnly(choice::set);
+    ui->R14->setReadOnly(choice::set);
+    ui->R13->setReadOnly(choice::set);
+    ui->R12->setReadOnly(choice::set);
+    ui->R11->setReadOnly(choice::set);
+    ui->R10->setReadOnly(choice::set);
+    ui->R9->setReadOnly(choice::set);
+    ui->R8->setReadOnly(choice::set);
+    ui->R7->setReadOnly(choice::set);
+    ui->R6->setReadOnly(choice::set);
+    ui->R5->setReadOnly(choice::set);
+    ui->R4->setReadOnly(choice::set);
+    ui->R3->setReadOnly(choice::set);
+    ui->R2->setReadOnly(choice::set);
+    ui->R1->setReadOnly(choice::set);
+    ui->R0->setReadOnly(choice::set);
+
+}
+void MainWindow::applyDataToReadBLocks(const QString &dataString)
+{
+    QStringList nDataString = dataString.split(" ");
+    ui->R15->setText(nDataString.at(0));
+    ui->R14->setText(nDataString.at(1));
+    ui->R13->setText(nDataString.at(2));
+    ui->R12->setText(nDataString.at(3));
+    ui->R11->setText(nDataString.at(4));
+    ui->R10->setText(nDataString.at(5));
+    ui->R9->setText(nDataString.at(6));
+    ui->R8->setText(nDataString.at(7));
+    ui->R7->setText(nDataString.at(8));
+    ui->R6->setText(nDataString.at(9));
+    ui->R5->setText(nDataString.at(10));
+    ui->R4->setText(nDataString.at(11));
+    ui->R3->setText(nDataString.at(12));
+    ui->R2->setText(nDataString.at(13));
+    ui->R1->setText(nDataString.at(14));
+    ui->R0->setText(nDataString.at(15));
+   //
+
+}
+
+
+
+
+
+void MainWindow::on_pushButton_12_clicked()
+{
+    ui->R15->setText(" ");
+    ui->R14->setText(" ");
+    ui->R13->setText(" ");
+    ui->R12->setText(" ");
+    ui->R11->setText(" ");
+    ui->R10->setText(" ");
+    ui->R9->setText(" ");
+    ui->R8->setText(" ");
+    ui->R7->setText(" ");
+    ui->R6->setText(" ");
+    ui->R5->setText(" ");
+    ui->R4->setText(" ");
+    ui->R3->setText(" ");
+    ui->R2->setText(" ");
+    ui->R1->setText(" ");
+    ui->R0->setText(" ");
 }
 

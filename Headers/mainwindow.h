@@ -16,6 +16,9 @@ class MainWindow : public QMainWindow
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
+    void setReadOnlyReadBlocks();
+    void applyDataToReadBLocks(const QString &dataString);
+
 
 private slots:
 
@@ -58,6 +61,10 @@ private slots:
     void on_factoryKeyB_clicked();
 
     void on_readBlock_clicked();
+
+    void on_loadTo0A_clicked();
+
+    void on_pushButton_12_clicked();
 
 signals:
    //    void connectedReaderChanged(const QString &text);
