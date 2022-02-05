@@ -101,6 +101,18 @@ private slots:
 
     void on_writeBlock_clicked();
 
+    void on_loadTo1A_clicked();
+
+    void on_loadTo0B_clicked();
+
+    void on_loadTo1B_clicked();
+
+    void on_authWithKeyB_clicked();
+
+    void on_ReleaseUID_clicked();
+
+    void on_rawGO_clicked();
+
 signals:
    //    void connectedReaderChanged(const QString &text);
 

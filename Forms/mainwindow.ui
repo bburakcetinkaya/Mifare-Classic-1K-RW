@@ -26,7 +26,10 @@
    <string>Mifare Classic Tool</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <widget class="QTabWidget" name="tabWidget">
+   <widget class="QTabWidget" name="tabs">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>10</x>
@@ -34,6 +37,12 @@
       <width>811</width>
       <height>431</height>
      </rect>
+    </property>
+    <property name="tabPosition">
+     <enum>QTabWidget::North</enum>
+    </property>
+    <property name="tabShape">
+     <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
      <number>0</number>
@@ -63,7 +72,10 @@
       <property name="frameShadow">
        <enum>QFrame::Sunken</enum>
       </property>
-      <widget class="QFrame" name="frame_SB">
+      <widget class="QFrame" name="SBframe">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -134,7 +146,10 @@
         </property>
        </widget>
       </widget>
-      <widget class="QFrame" name="frame_keyB">
+      <widget class="QFrame" name="keyBframe">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>440</x>
@@ -162,7 +177,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Load to 0</string>
+         <string>Load to V</string>
         </property>
        </widget>
        <widget class="QPushButton" name="pushButton_16">
@@ -201,7 +216,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Load to 1</string>
+         <string>Load to NV</string>
         </property>
        </widget>
        <widget class="QPushButton" name="factoryKeyB">
@@ -335,7 +350,10 @@
         </property>
        </widget>
       </widget>
-      <widget class="QFrame" name="frame_keyA">
+      <widget class="QFrame" name="keyAframe">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>110</x>
@@ -402,7 +420,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Load to 1</string>
+         <string>Load to NV</string>
         </property>
        </widget>
        <widget class="QPushButton" name="factoryKeyA">
@@ -519,7 +537,7 @@
          </rect>
         </property>
         <property name="text">
-         <string>Load to 0</string>
+         <string>Load to V</string>
         </property>
        </widget>
        <widget class="QLabel" name="statusA">
@@ -536,7 +554,10 @@
         </property>
        </widget>
       </widget>
-      <widget class="QFrame" name="frameRW">
+      <widget class="QFrame" name="RWframe">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -964,6 +985,9 @@
        </widget>
       </widget>
       <widget class="QFrame" name="frame_4">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -1073,6 +1097,9 @@
        </widget>
       </widget>
       <widget class="QFrame" name="frame_5">
+       <property name="enabled">
+        <bool>false</bool>
+       </property>
        <property name="geometry">
         <rect>
          <x>10</x>
@@ -1378,6 +1405,15 @@
          <height>341</height>
         </rect>
        </property>
+       <property name="gridStyle">
+        <enum>Qt::SolidLine</enum>
+       </property>
+       <property name="cornerButtonEnabled">
+        <bool>false</bool>
+       </property>
+       <attribute name="horizontalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
        <attribute name="horizontalHeaderCascadingSectionResizes">
         <bool>true</bool>
        </attribute>
@@ -1388,6 +1424,9 @@
         <bool>true</bool>
        </attribute>
        <attribute name="verticalHeaderVisible">
+        <bool>false</bool>
+       </attribute>
+       <attribute name="verticalHeaderShowSortIndicator" stdset="0">
         <bool>false</bool>
        </attribute>
        <row>
@@ -2380,7 +2419,10 @@
      </property>
     </widget>
    </widget>
-   <widget class="QFrame" name="frame_3">
+   <widget class="QFrame" name="UIDframe">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
     <property name="geometry">
      <rect>
       <x>420</x>
@@ -2396,7 +2438,7 @@
      <enum>QFrame::Box</enum>
     </property>
     <property name="frameShadow">
-     <enum>QFrame::Sunken</enum>
+     <enum>QFrame::Raised</enum>
     </property>
     <widget class="QLabel" name="label_9">
      <property name="geometry">
@@ -2436,6 +2478,9 @@
      <property name="text">
       <string>Connect</string>
      </property>
+     <attribute name="buttonGroup">
+      <string notr="true">buttonGroup_5</string>
+     </attribute>
     </widget>
     <widget class="QLabel" name="label_2">
      <property name="geometry">
@@ -2450,6 +2495,38 @@
       <string>UID: </string>
      </property>
     </widget>
+    <widget class="QPushButton" name="ReleaseUID">
+     <property name="enabled">
+      <bool>false</bool>
+     </property>
+     <property name="geometry">
+      <rect>
+       <x>255</x>
+       <y>26</y>
+       <width>71</width>
+       <height>20</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string>Release</string>
+     </property>
+     <attribute name="buttonGroup">
+      <string notr="true">buttonGroup_5</string>
+     </attribute>
+    </widget>
+    <widget class="QLabel" name="statusUID">
+     <property name="geometry">
+      <rect>
+       <x>80</x>
+       <y>0</y>
+       <width>141</width>
+       <height>16</height>
+      </rect>
+     </property>
+     <property name="text">
+      <string/>
+     </property>
+    </widget>
    </widget>
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
@@ -2457,9 +2534,10 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup"/>
-  <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="buttonGroup_2"/>
   <buttongroup name="buttonGroup_3"/>
+  <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="buttonGroup_5"/>
  </buttongroups>
 </ui>

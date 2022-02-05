@@ -3,6 +3,7 @@
 #include <winscard.h>
 #include <Headers\commands.h>
 #include <QString>
+#include <QList>
 
 enum choice
 {
@@ -15,10 +16,13 @@ class SCardConnection
 public:
     static SCardConnection* getInstance();
     LONG establishContext();
+    void clearhContext();
 
+    void clearpmszReaders();
     void setReaderLists(const bool choice);
-    LPTSTR getReaderLists();
+    /*QList<QString>*/LPTSTR  getReaderLists();
     void connectCard();
+    void disconnectCard();
     void setCardUID();
     QString getCardUID();
     BYTE getpbRecv();
@@ -32,6 +36,8 @@ public:
     LONG authenticate(BYTE *authCommand);
     QString readDataBlock(BYTE *readCommand);
     LONG loadKey(BYTE *loadCommand);
+    LONG writeDataBlock(BYTE *writeCommand);
+
 
 
 
@@ -50,6 +56,9 @@ private:
     BYTE            m_pbSend[MAX_APDU_SIZE];
     BYTE            m_pbRecv[MAX_APDU_SIZE];
     BYTE            m_blockNum;
+    int             m_readFlag;
+    QList<QString>  m_readerList;
+
 };
 
 #endif // CONNECT_H

@@ -4,7 +4,7 @@
 
 APDUCommand::APDUCommand()
 {
-    m_AuthCommand[AUTHCOMMAND_SIZE] = {}
+     m_AuthCommand[AUTHCOMMAND_SIZE] = {}
     ,m_ReadCommand[READCOMMAND_SIZE] = {}
     ,m_WriteCommand[WRITECOMMAND_SIZE] = {};
 
@@ -57,6 +57,8 @@ void APDUCommand::setAuthCommand(const BYTE block, const BYTE keySelect, const B
 }
 BYTE* APDUCommand::getAuthCommand()
 {
+    for(int i = 0 ; i<static_cast<int>(AUTHCOMMAND_SIZE); i++)
+    printf("%X ",m_AuthCommand[i]);
     return m_AuthCommand;
 }
 

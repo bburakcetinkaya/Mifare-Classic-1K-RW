@@ -4,6 +4,7 @@
 #include <cstdio>
 #include <QByteArray>
 #include <QString>
+#include <QList>
 #include <QDebug>
 
 SCardConnection* SCardConnection::instance = NULL;
@@ -16,7 +17,8 @@ SCardConnection* SCardConnection::getInstance()
 }
 SCardConnection::SCardConnection()
 {
-    m_hContext = 0
+    m_readerList ={}
+   ,m_hContext = 0
    ,m_pmszReaders = NULL
    ,m_lRet = 0
    ,m_dwAP = 0
@@ -35,20 +37,63 @@ LONG SCardConnection::establishContext()
    m_lRet = SCardEstablishContext(SCARD_SCOPE_USER, 0, 0, &m_hContext);
    return m_lRet;
 }
+void SCardConnection::clearhContext()
+{
+     }
 
 void SCardConnection::setReaderLists(const bool choice)
 {
-       if(m_pmszReaders != NULL)
-       {
-            m_pmszReaders = NULL;
-            if(choice) SCardListReaders(m_hContext, NULL, (LPTSTR)&m_pmszReaders, &m_cch );
+
+//       if(m_pmszReaders != NULL)
+//       {
+//           LPTSTR pReader = m_pmszReaders;
+//           while ( '\0' != *pReader )
+//           {
+//               // Display the value.
+//               printf("Reader: %S\n", pReader );
+//               // Advance to the next value.
+//               pReader = pReader + wcslen((wchar_t *)pReader) + 1;
+//           }
+
+                m_lRet =SCardListReaders(m_hContext, NULL, (LPTSTR)&m_pmszReaders, &m_cch);
+                qDebug() << m_lRet;
+//                if (m_lRet != SCARD_S_SUCCESS)
+//                    qDebug() << "fuck you";
+//                qDebug() << readerList;
+
+//                 QList<QString> list =  QList<QString>(readerList.split('\0'));
+//                 int i = 0;
+//                            while ( i < list.count())
+//                            {
+//                                if (list.at(i).trimmed().length() > 0)
+//                                    i++;
+//                                else
+//                                    list.removeAt(i);
+//                            }
+//    qDebug() << "starts hehe";
+//                            qDebug() << list;
+                            //LPTSTR pReader = m_pmszReaders;
+//            while ( '\0' != *pReader )
+//            {
+//                // Display the value.
+//                printf("Reader1: %S\n", pReader );
+//                // Advance to the next value.
+//                pReader = pReader + wcslen((wchar_t *)pReader) + 1;
+//            }
            // m_pmszReaders = m_pmszReaders + wcslen((wchar_t *)m_pmszReaders) + 1; // for acr122u picc
-       }
-       else
-       {
-           if(choice) SCardListReaders(m_hContext, NULL, (LPTSTR)&m_pmszReaders, &m_cch );
-          // m_pmszReaders = m_pmszReaders + wcslen((wchar_t *)m_pmszReaders) + 1; // for acr122u picc
-       }
+
+//       else
+//       {
+//           if(choice) SCardListReaders(m_hContext, NULL, (LPTSTR)&m_pmszReaders, &m_cch )
+//           LPTSTR pReader = m_pmszReaders;
+//           while ( '\0' != *pReader )
+//           {
+//               // Display the value.
+//               printf("Reade2: %S\n", pReader );
+//               // Advance to the next value.
+//               pReader = pReader + wcslen((wchar_t *)pReader) + 1;
+//           } // for acr122u picc
+//       }
 }
 LPTSTR SCardConnection::getReaderLists()
 {
@@ -57,6 +102,10 @@ LPTSTR SCardConnection::getReaderLists()
 void SCardConnection::connectCard()
 {
    SCardConnect(m_hContext, m_pmszReaders,SCARD_SHARE_SHARED, SCARD_PROTOCOL_Tx, &m_hCard, &m_dwAP);
+}
+void SCardConnection::disconnectCard()
+{
+    SCardDisconnect(m_hCard,SCARD_LEAVE_CARD);
 }
 void SCardConnection::setCardUID()
 {
@@ -147,6 +196,22 @@ void SCardConnection::setBlockNum(const QString &blockAsString)
 BYTE SCardConnection::getBlockNum()
 {
     return m_blockNum;
+}
+LONG SCardConnection::writeDataBlock(BYTE *writeCommand)
+{
+    BYTE command[WRITECOMMAND_SIZE] = {};
+    for(int i = 0; i<static_cast<int>(WRITECOMMAND_SIZE); i++)
+        command[i] = *(writeCommand+i);
+    memcpy(m_pbSend, command, WRITECOMMAND_SIZE);
+    m_cbSend = WRITECOMMAND_SIZE;
+    m_cbRecv = MAX_APDU_SIZE;
+    m_lRet=SCardTransmit(m_hCard, SCARD_PCI_T1, m_pbSend, m_cbSend, NULL, m_pbRecv, &m_cbRecv);
+    return m_lRet;
+
+}
+void SCardConnection::clearpmszReaders()
+{
+ SCardFreeMemory(m_hContext,m_pmszReaders);
 }
 BYTE SCardConnection::getpbRecv()
 {
