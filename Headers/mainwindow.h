@@ -68,7 +68,38 @@ private slots:
 
     void on_R15_textChanged();
 
-    void on_pushButton_17_clicked();
+    void on_R14_textChanged();
+
+    void on_R13_textChanged();
+
+    void on_R12_textChanged();
+
+    void on_R11_textChanged();
+
+    void on_R10_textChanged();
+
+    void on_R9_textChanged();
+
+    void on_R8_textChanged();
+
+    void on_R7_textChanged();
+
+    void on_R6_textChanged();
+
+    void on_R5_textChanged();
+
+    void on_R4_textChanged();
+
+    void on_R3_textChanged();
+
+    void on_R2_textChanged();
+
+    void on_R1_textChanged();
+
+    void on_R0_textChanged();
+
+
+    void on_writeBlock_clicked();
 
 signals:
    //    void connectedReaderChanged(const QString &text);

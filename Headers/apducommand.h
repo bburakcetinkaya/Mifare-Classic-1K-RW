@@ -13,7 +13,7 @@ public:
     void setReadCommand(const BYTE block);
     BYTE* getReadCommand();
 
-    void setWriteCommand();
+    void setWriteCommand(const BYTE block, const BYTE *writeCmd);
     BYTE* getWriteCommand();
 
     void setLoadKeyCommand(const BYTE* key, const BYTE storageAddress);
@@ -22,8 +22,8 @@ public:
 private:
     BYTE m_AuthCommand[AUTHCOMMAND_SIZE];
     BYTE m_ReadCommand[READCOMMAND_SIZE];
-   // BYTE m_WriteCommand[WRITECOMMAND_SIZE];
     BYTE m_LoadKeyCommand[LOADCOMMAND_SIZE];
+    BYTE m_WriteCommand[WRITECOMMAND_SIZE];
 
 
 };

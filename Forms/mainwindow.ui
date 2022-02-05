@@ -36,7 +36,7 @@
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Operations">
      <property name="autoFillBackground">
@@ -567,7 +567,7 @@
          <string>READ</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_13">
+       <widget class="QPushButton" name="writeBlock">
         <property name="geometry">
          <rect>
           <x>710</x>
@@ -1207,7 +1207,7 @@
       </widget>
      </widget>
     </widget>
-    <widget class="RAW" name="RAW">
+    <widget class="QWidget" name="RAW">
      <property name="autoFillBackground">
       <bool>true</bool>
      </property>
@@ -2454,19 +2454,11 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
- <customwidgets>
-  <customwidget>
-   <class>RAW</class>
-   <extends>QWidget</extends>
-   <header location="global">raw.h</header>
-   <container>1</container>
-  </customwidget>
- </customwidgets>
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
+  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_3"/>
  </buttongroups>

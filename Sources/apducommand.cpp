@@ -4,8 +4,9 @@
 
 APDUCommand::APDUCommand()
 {
-    m_AuthCommand[AUTHCOMMAND_SIZE] = {};
-    m_ReadCommand[READCOMMAND_SIZE] = {};
+    m_AuthCommand[AUTHCOMMAND_SIZE] = {}
+    ,m_ReadCommand[READCOMMAND_SIZE] = {}
+    ,m_WriteCommand[WRITECOMMAND_SIZE] = {};
 
 }
 void APDUCommand::setLoadKeyCommand(const BYTE* key, const BYTE storageAddress)
@@ -50,8 +51,8 @@ void APDUCommand::setAuthCommand(const BYTE block, const BYTE keySelect, const B
         case 9:
             m_AuthCommand[i] = storageAddress;
             break;
-         }//0xFF,  0x86,  0x00, 0x00,  0x05,  0x00, 0x00,  0x04, 0x60, 0x00
-    printf("%X ",m_AuthCommand[i]);
+         }
+
     }
 }
 BYTE* APDUCommand::getAuthCommand()
@@ -74,22 +75,41 @@ void APDUCommand::setReadCommand(const BYTE block)
         case 4:
             m_ReadCommand[i] = BLOCK_SIZE;
             break;
-         } //0xFF, 0xB0, 0x00, 0x00, 0x10
-        printf("%X ",m_ReadCommand[i]);
-
+         }
     }
-
 }
 BYTE* APDUCommand::getReadCommand()
 {
     return m_ReadCommand;
 }
 
-void APDUCommand::setWriteCommand()
-{
+void APDUCommand::setWriteCommand(const BYTE block, const BYTE *writeCmd)
+{    
+    for( int i=0; i<static_cast<int>(WRITECOMMAND_SIZE); i++)
+    {
+        switch (i)
+        {
+        case 0:       case 1:       case 2:
+            m_WriteCommand[i] = writeBlockDataCommand[i];
+            break;
+        case 3:
+            m_WriteCommand[i] = block;
+            break;
+        case 4:
+            m_WriteCommand[i] = BLOCK_SIZE;
+            break;
+        case 5:       case 6:       case 7:     case 8:
+        case 9:       case 10:      case 11:    case 12:
+        case 13:      case 14:      case 15:    case 16:
+        case 17:      case 18:      case 19:    case 20:
+            m_WriteCommand[i] = *(writeCmd+i-5);
+            break;
+         }
+        printf("%X ",m_WriteCommand[i]);
+    }
 
 }
-//BYTE* APDUCommand::getWriteCommand()
-//{
-//    return m_WriteCommand;
-//}
+BYTE* APDUCommand::getWriteCommand()
+{
+    return m_WriteCommand;
+}

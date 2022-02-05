@@ -5,7 +5,6 @@
 #include "Headers/scardoperations.h"
 #include "Headers/apducommand.h"
 #include <QString>
-#include <QDebug>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -13,15 +12,6 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 }
-struct RWblocks
-{
-    QTextEdit *edit;
-    QLabel *label;
-    QWidget *widget;
-};
-
-QVector<RWblocks> RWVector;
-
 MainWindow::~MainWindow()
 {
     delete ui;
@@ -174,4 +164,40 @@ void MainWindow::on_readBlock_clicked()
         ui->statusRW->setStyleSheet("QLabel#statusRW {font-weight: bold; color : red; }");
         }
 }
+
+void MainWindow::on_writeBlock_clicked()
+{
+    SCardConnection* connect = SCardConnection::getInstance();
+    APDUCommand apdu{};
+    QString _writeBlock;
+    _writeBlock.append ( (ui->R15->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R14->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R13->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R12->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R11->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R10->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R9 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R8 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R7 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R6 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R5 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R4 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R3 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R2 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R1 ->toPlainText()).toUtf8() );
+    _writeBlock.append ( (ui->R0 ->toPlainText()).toUtf8() );
+
+
+    QByteArray _writeBlockBytes = QByteArray::fromHex(_writeBlock.toLatin1());
+    BYTE writeBlock[BLOCK_SIZE];
+    for( int i=0 ; i<static_cast<int>(BLOCK_SIZE) ; i++ )
+    {
+        writeBlock[i] = _writeBlockBytes[i];
+    printf("%X ",writeBlock[i]);
+    }
+    QString blockString = (ui->blockSelect->text());
+    connect->setBlockNum(blockString);
+    apdu.setWriteCommand(connect->getBlockNum(), writeBlock);
+}
+
 
