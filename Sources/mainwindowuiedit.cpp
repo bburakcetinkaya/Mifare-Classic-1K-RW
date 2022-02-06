@@ -369,6 +369,7 @@ void MainWindow::on_factoryKeyB_clicked()
 }
 void MainWindow::setReadOnlyReadBlocks()
 {
+
     ui->R15->setReadOnly(choice::set);
     ui->R14->setReadOnly(choice::set);
     ui->R13->setReadOnly(choice::set);
@@ -389,6 +390,7 @@ void MainWindow::setReadOnlyReadBlocks()
 }
 void MainWindow::applyDataToReadBLocks(const QStringList &dataList)
 {
+    TextWindow* txtwnd = TextWindow::getInstance();
     ui->R15->setText(dataList.at(0));
     ui->R14->setText(dataList.at(1));
     ui->R13->setText(dataList.at(2));
@@ -403,13 +405,65 @@ void MainWindow::applyDataToReadBLocks(const QStringList &dataList)
     ui->R4 ->setText(dataList.at(11));
     ui->R3 ->setText(dataList.at(12));
     ui->R2 ->setText(dataList.at(13));
+    //ui->R1->setEnabled(choice::set);
     ui->R1 ->setText(dataList.at(14));
+    //ui->R0->setEnabled(choice::set);
+    ui->R0 ->setText(dataList.at(15));
+    QString dataStr = dataList.join(' ');
+    QString textValue = QString::fromLocal8Bit(QByteArray::fromHex(dataStr.toLatin1()));
+    txtwnd->setTextAsAscii(textValue);
+
+}
+void MainWindow::applyDataFromTextWindowToKeyA()
+{
+    TextWindow* txtwnd = TextWindow::getInstance();
+    QStringList dataList = txtwnd->getKeyA();
+    ui->keyA5->setText(dataList.at(0));
+    ui->keyA4->setText(dataList.at(1));
+    ui->keyA3->setText(dataList.at(2));
+    ui->keyA2->setText(dataList.at(3));
+    ui->keyA1->setText(dataList.at(4));
+    ui->keyA0->setText(dataList.at(5));
+}
+void MainWindow::applyDataFromTextWindowToKeyB()
+{
+    TextWindow* txtwnd = TextWindow::getInstance();
+    QStringList dataList = txtwnd->getKeyB();
+    ui->keyB5->setText(dataList.at(0));
+    ui->keyB4->setText(dataList.at(1));
+    ui->keyB3->setText(dataList.at(2));
+    ui->keyB2->setText(dataList.at(3));
+    ui->keyB1->setText(dataList.at(4));
+    ui->keyB0->setText(dataList.at(5));
+}
+void MainWindow::applyDataFromTextWindow()
+{
+    TextWindow* txtwnd = TextWindow::getInstance();
+    QStringList dataList = txtwnd->getDataList();
+    ui->R15->setText(dataList.at(0));
+    ui->R14->setText(dataList.at(1));
+    ui->R13->setText(dataList.at(2));
+    ui->R12->setText(dataList.at(3));
+    ui->R11->setText(dataList.at(4));
+    ui->R10->setText(dataList.at(5));
+    ui->R9 ->setText(dataList.at(6));
+    ui->R8 ->setText(dataList.at(7));
+    ui->R7 ->setText(dataList.at(8));
+    ui->R6 ->setText(dataList.at(9));
+    ui->R5 ->setText(dataList.at(10));
+    ui->R4 ->setText(dataList.at(11));
+    ui->R3 ->setText(dataList.at(12));
+    ui->R2 ->setText(dataList.at(13));
+    //ui->R1->setEnabled(choice::set);
+    ui->R1 ->setText(dataList.at(14));
+    //ui->R0->setEnabled(choice::set);
     ui->R0 ->setText(dataList.at(15));
 
 }
 
 void MainWindow::on_RWClear_clicked()
 {
+    TextWindow* txtwnd = TextWindow::getInstance();
     ui->R15->clear(); ui->R15->setReadOnly(choice::clear);
     ui->R14->clear(); ui->R14->setReadOnly(choice::clear);
     ui->R13->clear(); ui->R13->setReadOnly(choice::clear);
@@ -426,6 +480,8 @@ void MainWindow::on_RWClear_clicked()
     ui->R2 ->clear(); ui->R2 ->setReadOnly(choice::clear);
     ui->R1 ->clear(); ui->R1 ->setReadOnly(choice::clear);
     ui->R0 ->clear(); ui->R0 ->setReadOnly(choice::clear);
+    txtwnd->setTextWindowTextReadOnly(false);
+    txtwnd->clearTextWindowText();
 }
 void MainWindow::on_R15_textChanged()
 {

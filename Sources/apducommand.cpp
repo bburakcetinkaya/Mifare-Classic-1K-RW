@@ -10,7 +10,7 @@ APDUCommand::APDUCommand()
 
 }
 void APDUCommand::setLoadKeyCommand(const BYTE* key, const BYTE storageAddress)
-{
+{printf("loadcommand: ");
     for( int i=0; i<static_cast<int>(LOADCOMMAND_SIZE); i++)
     {
         switch (i)
@@ -21,12 +21,14 @@ void APDUCommand::setLoadKeyCommand(const BYTE* key, const BYTE storageAddress)
         case 3:
             m_LoadKeyCommand[i] = storageAddress;
             break;
-//        case 4:
-//            m_LoadKeyCommand[i] = (BYTE)KEY_SIZE;
-        case 4:       case 5:       case 6:       case 7:       case 8:       case 9:
-            m_LoadKeyCommand[i] = *(key+i-9);
+        case 4:
+            m_LoadKeyCommand[i] = (BYTE)KEY_SIZE;
+            break;
+        case 5:       case 6:       case 7:       case 8:       case 9:       case 10:
+            m_LoadKeyCommand[i] = *(key+i-5);
             break; //0xFF, 0x82, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
          }
+    printf("%X ",m_LoadKeyCommand[i]);
     }
 }
 BYTE* APDUCommand::getLoadKeyCommand()

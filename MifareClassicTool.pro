@@ -15,7 +15,8 @@ SOURCES += \
     Sources/main.cpp \
     Sources/mainwindow.cpp \
     Sources/mainwindowuiedit.cpp \
-    Sources/scardoperations.cpp
+    Sources/scardoperations.cpp \
+    Sources/textwindow.cpp
 
 
 HEADERS += \
@@ -23,11 +24,13 @@ HEADERS += \
     Headers/commands.h \
     Headers/connect.h \
     Headers/mainwindow.h \
-    Headers/scardoperations.h
+    Headers/scardoperations.h \
+    Headers/textwindow.h
 
 
 FORMS += \
-    Forms/mainwindow.ui
+    Forms/mainwindow.ui \
+    Forms/textwindow.ui
 
 LIBS += -lwinscard -lz
 

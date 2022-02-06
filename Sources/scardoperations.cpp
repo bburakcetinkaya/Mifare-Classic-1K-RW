@@ -9,12 +9,11 @@ SCardOperations::SCardOperations()
     m_keyA[KEY_SIZE] = {}
    ,m_keyB[KEY_SIZE] = {};
 }
-void SCardOperations::setKeyA( const QString _keyA )
+void SCardOperations::setKeyA( const BYTE *_keyA )
 {
-    QByteArray _keyABytes = QByteArray::fromHex(_keyA.toLatin1());
     for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
     {
-        m_keyA[i] = _keyABytes[i];
+        m_keyA[i] = *(_keyA+i);
     }
 }
 
@@ -24,12 +23,11 @@ BYTE* SCardOperations::getKeyA()
     return  m_keyA;
 }
 
-void SCardOperations::setKeyB( const QString _keyB )
+void SCardOperations::setKeyB( const BYTE *_keyB )
 {
-    QByteArray _keyBBytes = QByteArray::fromHex(_keyB.toLatin1());
-    for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
+       for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
     {
-        m_keyB[i] = _keyBBytes[i];
+        m_keyB[i] = *(_keyB+i);
     }
 }
 

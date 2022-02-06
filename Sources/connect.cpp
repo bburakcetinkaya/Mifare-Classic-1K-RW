@@ -139,7 +139,9 @@ LONG SCardConnection::loadKey(BYTE *loadCommand)
 {
     BYTE command[LOADCOMMAND_SIZE];
     for(int i = 0; i<static_cast<int>(LOADCOMMAND_SIZE); i++)
-        command[i] = *(loadCommand+i);
+    {command[i] = *(loadCommand+i);
+        printf("%X ",command[i]);
+    }
     memcpy(m_pbSend, command, LOADCOMMAND_SIZE);
     m_cbSend = LOADCOMMAND_SIZE;
     m_cbRecv = MAX_APDU_SIZE;
@@ -147,6 +149,9 @@ LONG SCardConnection::loadKey(BYTE *loadCommand)
     {
         return m_lRet;
 }
+    printf("response: ");
+    for(int i = 0; i<m_cbRecv;i++)
+    printf("%X ",m_pbRecv[i]);
         return m_lRet;
 
 }

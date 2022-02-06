@@ -180,7 +180,7 @@
          <string>Load to V</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_16">
+       <widget class="QPushButton" name="textKeyB">
         <property name="geometry">
          <rect>
           <x>230</x>
@@ -384,7 +384,7 @@
          <string>AUTH</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_30">
+       <widget class="QPushButton" name="textKeyA">
         <property name="geometry">
          <rect>
           <x>230</x>
@@ -601,7 +601,7 @@
          <string>WRITE</string>
         </property>
        </widget>
-       <widget class="QPushButton" name="pushButton_11">
+       <widget class="QPushButton" name="textRWblocks">
         <property name="geometry">
          <rect>
           <x>610</x>
@@ -2534,10 +2534,10 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="buttonGroup"/>
   <buttongroup name="buttonGroup_2"/>
-  <buttongroup name="buttonGroup_3"/>
-  <buttongroup name="buttonGroup_4"/>
   <buttongroup name="buttonGroup_5"/>
+  <buttongroup name="buttonGroup_4"/>
+  <buttongroup name="buttonGroup"/>
+  <buttongroup name="buttonGroup_3"/>
  </buttongroups>
 </ui>

@@ -8,10 +8,10 @@
 inline constexpr DWORD MAX_APDU_SIZE = 255;
 inline constexpr DWORD RESPONSE_SIZE = 2;
 inline constexpr DWORD UID_SIZE = 4;
-inline constexpr DWORD KEY_SIZE = 6;
+inline constexpr BYTE KEY_SIZE = 0x06;
 inline constexpr DWORD AUTHCOMMAND_SIZE = 10;
 inline constexpr DWORD READCOMMAND_SIZE = 5;
-inline constexpr DWORD LOADCOMMAND_SIZE = 10;
+inline constexpr BYTE LOADCOMMAND_SIZE = 0x0B;
 inline constexpr DWORD WRITECOMMAND_SIZE = 21;
 inline constexpr BYTE  BLOCK_SIZE = 0x10;
 inline constexpr BYTE  V_MEMORY = 0x00;

@@ -20,6 +20,9 @@ public:
     void applyDataToReadBLocks(const QStringList &dataList);
 
 
+    //void applyDataToReadBLocks(const QStringList &dataList);
+
+
 private slots:
 
     void on_connectReader_clicked();
@@ -113,7 +116,17 @@ private slots:
 
     void on_rawGO_clicked();
 
+    void on_textKeyA_clicked();
+
+    void on_textKeyB_clicked();
+
+    void on_textRWblocks_clicked();
+    void applyDataFromTextWindow();
+    void applyDataFromTextWindowToKeyB();
+    void applyDataFromTextWindowToKeyA();
+
 signals:
+    void listFromTextWindow(QStringList dataList);
    //    void connectedReaderChanged(const QString &text);
 
 

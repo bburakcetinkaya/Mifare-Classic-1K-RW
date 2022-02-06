@@ -11,10 +11,10 @@ class SCardOperations
 public:
 
     SCardOperations();
-    void setKeyA(const QString _keyA);
+    void setKeyA(const BYTE *_keyA);
     BYTE* getKeyA();
 
-    void setKeyB(const QString _keyB);
+    void setKeyB(const BYTE *_keyB);
     BYTE* getKeyB();
 
 private:

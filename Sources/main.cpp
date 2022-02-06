@@ -1,4 +1,5 @@
 #include "Headers\mainwindow.h"
+#include "Headers/textwindow.h"
 #include "Headers\connect.h"
 
 #include <QApplication>
