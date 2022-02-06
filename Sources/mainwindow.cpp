@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <stdio.h>
 #include <cstring>
+#include <QTableWidgetItem>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -116,25 +117,20 @@ void MainWindow::on_ReleaseUID_clicked()
 
     ui->tabs->setCurrentIndex(0);
 }
+
 void MainWindow::on_loadTo0A_clicked()
 {
     SCardConnection* connect = SCardConnection::getInstance();
     SCardOperations scrdops{};
     APDUCommand apdu{};
-    QString _keyA;
-    _keyA.append ( (ui->keyA5->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA4->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA3->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA2->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA1->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA0->toPlainText()).toUtf8() );
 
-    BYTE keyA[KEY_SIZE] = {};
+    QString _keyA = MainWindow::getKeyA();
     QByteArray _keyBytes = QByteArray::fromHex(_keyA.toLatin1());
+    BYTE keyA[KEY_SIZE] = {};
         for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
         {
             keyA[i] = _keyBytes[i];
-        printf("%X ",keyA[i]);
+       // printf("%X ",keyA[i]);
         }
     scrdops.setKeyA(keyA);
     BYTE storageAddress = V_MEMORY;
@@ -156,15 +152,8 @@ void MainWindow::on_loadTo1A_clicked()
     SCardConnection* connect = SCardConnection::getInstance();
     SCardOperations scrdops{};
     APDUCommand apdu{};
-    QString _keyA;
-    _keyA.append ( (ui->keyA5->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA4->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA3->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA2->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA1->toPlainText()).toUtf8() );
-    _keyA.append ( (ui->keyA0->toPlainText()).toUtf8() );
 
-
+    QString _keyA = MainWindow::getKeyA();
     BYTE keyA[KEY_SIZE] = {};
     QByteArray _keyBytes = QByteArray::fromHex(_keyA.toLatin1());
         for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
@@ -192,16 +181,8 @@ void MainWindow::on_loadTo0B_clicked()
     SCardConnection* connect = SCardConnection::getInstance();
     SCardOperations scrdops{};
     APDUCommand apdu{};
-    QString _keyB;
-    _keyB.append ( (ui->keyB5->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB4->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB3->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB2->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB1->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB0->toPlainText()).toUtf8() );
 
-
-
+    QString _keyB = MainWindow::getKeyB();
     BYTE keyB[KEY_SIZE] = {};
     QByteArray _keyBytes = QByteArray::fromHex(_keyB.toLatin1());
         for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
@@ -224,28 +205,18 @@ void MainWindow::on_loadTo0B_clicked()
         }
 
 }
-
-
 void MainWindow::on_loadTo1B_clicked()
 {
     SCardConnection* connect = SCardConnection::getInstance();
     SCardOperations scrdops{};
     APDUCommand apdu{};
-    QString _keyB;
-    _keyB.append ( (ui->keyB5->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB4->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB3->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB2->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB1->toPlainText()).toUtf8() );
-    _keyB.append ( (ui->keyB0->toPlainText()).toUtf8() );
 
-
+    QString _keyB = MainWindow::getKeyB();
     BYTE keyB[KEY_SIZE] = {};
     QByteArray _keyBytes = QByteArray::fromHex(_keyB.toLatin1());
         for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
         {
             keyB[i] = _keyBytes[i];
-        printf("%X ",keyB[i]);
         }
     scrdops.setKeyB(keyB);
     BYTE storageAddress = NV_MEMORY;
@@ -260,13 +231,10 @@ void MainWindow::on_loadTo1B_clicked()
             ui->statusA->setText("Key loaded.");
             ui->statusA->setStyleSheet("QLabel#statusB {font-weight: bold; color : green; }");
         }
-
 }
-
 
 void MainWindow::on_authWithKeyA_clicked()
 {
-
     SCardConnection* connect = SCardConnection::getInstance();
     APDUCommand apdu{};
     QString blockString =(ui->blockSelect->text());
@@ -311,7 +279,6 @@ void MainWindow::on_authWithKeyB_clicked()
                 ui->RAW->setEnabled(choice::set);
                 ui->Commands->setEnabled(choice::set);
             }
-
 }
 
 void MainWindow::on_readBlock_clicked()
@@ -320,57 +287,36 @@ void MainWindow::on_readBlock_clicked()
     SCardConnection* connect = SCardConnection::getInstance();
     APDUCommand apdu{};
     TextWindow* txtwnd = TextWindow::getInstance();
-    QString recievedData;
+
     QString blockString = (ui->blockSelect->text());
     connect->setBlockNum(blockString);
     apdu.setReadCommand(connect->getBlockNum());
 
+    QString recievedData;
     recievedData = connect->readDataBlock(apdu.getReadCommand());
     QStringList dataList = recievedData.split(' ');
 
     if (dataList.at(BLOCK_SIZE-RESPONSE_SIZE)   != SUCCESS_RESPONSE[0] &&
         dataList.at(BLOCK_SIZE-RESPONSE_SIZE+1) != SUCCESS_RESPONSE[1])
         {
-
-        ui->statusRW->setText("Read successfully.");
-        ui->statusRW->setStyleSheet("QLabel#statusRW {font-weight: bold; color : green; }");
-        MainWindow::applyDataToReadBLocks(dataList);
-
-        txtwnd->setTextWindowTextReadOnly(true);
-
-
-
+            ui->statusRW->setText("Read successfully.");
+            ui->statusRW->setStyleSheet("QLabel#statusRW {font-weight: bold; color : green; }");
+            MainWindow::applyDataToReadBLocks(dataList);
+            txtwnd->setTextWindowTextReadOnly(true);
+            ui->ACframe->setEnabled(true);
         }
     else
         {
-        ui->statusRW->setText("Failed to read!");
-        ui->statusRW->setStyleSheet("QLabel#statusRW {font-weight: bold; color : red; }");
+            ui->statusRW->setText("Failed to read!");
+            ui->statusRW->setStyleSheet("QLabel#statusRW {font-weight: bold; color : red; }");
         }
 }
-
 void MainWindow::on_writeBlock_clicked()
 {
     SCardConnection* connect = SCardConnection::getInstance();
     APDUCommand apdu{};
-    QString _writeBlock;
-    _writeBlock.append ( (ui->R15->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R14->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R13->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R12->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R11->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R10->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R9 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R8 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R7 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R6 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R5 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R4 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R3 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R2 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R1 ->toPlainText()).toUtf8() );
-    _writeBlock.append ( (ui->R0 ->toPlainText()).toUtf8() );
 
-
+    QString _writeBlock = MainWindow::getWriteBlocks();
     QByteArray _writeBlockBytes = QByteArray::fromHex(_writeBlock.toLatin1());
     BYTE writeBlock[BLOCK_SIZE];
     for( int i=0 ; i<static_cast<int>(BLOCK_SIZE) ; i++ )
@@ -392,64 +338,98 @@ void MainWindow::on_writeBlock_clicked()
         ui->statusRW->setStyleSheet("QLabel#statusRW {font-weight: bold; color : green; }");
         }
 }
-
-
-
 void MainWindow::on_rawGO_clicked()
-{}
-//{
+{
+    SCardConnection* connect = SCardConnection::getInstance();
+    SCardOperations scrdops{};
+    APDUCommand apdu{};
+    QAbstractButton *button = ui->rawKeySelectGroup->checkedButton();
+    QString _keyA = MainWindow::getKeyA();
+    QByteArray _keyBytes = QByteArray::fromHex(_keyA.toLatin1());
+    BYTE keyA[KEY_SIZE] = {};
+    QString sectorStr;
+    int sectorNum = -1;
+        for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
+        {
+            keyA[i] = _keyBytes[i];
+       // printf("%X ",keyA[i]);
+        }
+    scrdops.setKeyA(keyA);
 
-//    QList< QStringList > lists;
-//    QString line;
-//    do {
-//        line = in.readLine();
-//        lists << line.split("\t");
-//    } while (!line.isNull());
+    QString recievedData;
+    QStringList recievedDataSplit;
+    QVector<QStringList> dataList;
+   // if(button == ui->rawCheckKeyA)  on_loadTo0A_clicked();
+    //if(button == ui->rawCheckKeyB)  on_loadTo1B_clicked();
+    for(int i = 0; i<64; i++)
+        {
+        QString blockStr = QString::number(i);
 
-//    tableWidget.setRowCount( lists.size() );
-//    tableWidget.setColumnCount( lists[0].size() );
+        on_loadTo0A_clicked();
+        connect->setBlockNum(blockStr);
+        if(i%4 == 0)
+            {
+                sectorNum++;
+                sectorStr = QString::number(i/4);
 
-//    for ( int row = 0; row < lists.size(); ++row ) {
-//        for ( int column = 0; column < lists[row].size(); ++column ) {
-//            tableWidget.setItem(row, column, new QTableWidgetItem(lists[row][column]));
-//        }
-//    }
-//}
-//}
+            //qDebug() << recievedData;
+                apdu.setLoadKeyCommand(scrdops.getKeyA() , V_MEMORY);
+                connect->loadKey(apdu.getLoadKeyCommand());
+                apdu.setAuthCommand(connect->getBlockNum(), KEYA_SELECT, 0x00);
+                //qDebug() << apdu.getAuthCommand();
+                connect->authenticate(apdu.getAuthCommand());
+            }
+            apdu.setReadCommand(connect->getBlockNum());
+            recievedData = connect->readDataBlock(apdu.getReadCommand());
+            recievedData.push_front(" "+blockStr+" ");
+            if(i%4 != 0)recievedData.push_front("\0");
+            else recievedData.push_front(sectorStr);
 
-
+            recievedDataSplit = recievedData.split(' ');
+            dataList.append(recievedDataSplit);
+    }
+    qDebug() << dataList;
+    QStringList rawHeaders = {"Sector","Block","B0","B1","B2","B3","B4","B5"
+                             ,"B6","B7","B8","B9","B10","B11","B12","B13","B14","B15" };
+    for(int row = 0; row< dataList.length()+1;row++)
+    {
+        ui->rawDataTable->insertRow( row );
+        for(int column = 0; column<BLOCK_SIZE+2; column++)
+        {
+             if(row==0)
+             {
+                 ui->rawDataTable->item(row,column);
+                 ui->rawDataTable->setItem(row,column,new QTableWidgetItem(rawHeaders.at(column)));
+                 ui->rawDataTable->resizeColumnsToContents();
+             }
+             else
+             {
+                 ui->rawDataTable->item(row,column);
+                 ui->rawDataTable->setItem(row,column,new QTableWidgetItem((dataList[row-1]).at(column)));
+             }
+        }
+    }
+    //ui->rawDataTable->
+}
 void MainWindow::on_textKeyA_clicked()
 {
-   TextWindow* txtwnd = TextWindow::getInstance();
+    TextWindow* txtwnd = TextWindow::getInstance();
     txtwnd->show();
     txtwnd->setTextAreaSelect(0);
     txtwnd->setInputMaxSize(KEY_SIZE);
-
-
-//    if(txt->on_textWindowOK_clicked())
-//    QString inputText = txt->getInput();
-
-//    qDebug() << inputText;
-//    //delete txt;
 }
-
-
 void MainWindow::on_textKeyB_clicked()
 {
     TextWindow* txtwnd = TextWindow::getInstance();
     txtwnd->show();
     txtwnd->setTextAreaSelect(1);
     txtwnd->setInputMaxSize(KEY_SIZE);
-
 }
-
-
 void MainWindow::on_textRWblocks_clicked()
 {
     TextWindow* txtwnd = TextWindow::getInstance();
     txtwnd->show();
     txtwnd->setTextAreaSelect(2);
     txtwnd->setInputMaxSize(BLOCK_SIZE);
-
 }
 

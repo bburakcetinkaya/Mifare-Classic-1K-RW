@@ -8,7 +8,6 @@
 namespace Ui {
 class TextWindow;
 }
-
 class TextWindow : public QFrame
 {
     Q_OBJECT

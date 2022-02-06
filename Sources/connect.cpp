@@ -39,61 +39,11 @@ LONG SCardConnection::establishContext()
 }
 void SCardConnection::clearhContext()
 {
-     }
+}
 
 void SCardConnection::setReaderLists(const bool choice)
 {
-
-//       if(m_pmszReaders != NULL)
-//       {
-//           LPTSTR pReader = m_pmszReaders;
-//           while ( '\0' != *pReader )
-//           {
-//               // Display the value.
-//               printf("Reader: %S\n", pReader );
-//               // Advance to the next value.
-//               pReader = pReader + wcslen((wchar_t *)pReader) + 1;
-//           }
-
-                m_lRet =SCardListReaders(m_hContext, NULL, (LPTSTR)&m_pmszReaders, &m_cch);
-                qDebug() << m_lRet;
-//                if (m_lRet != SCARD_S_SUCCESS)
-//                    qDebug() << "fuck you";
-//                qDebug() << readerList;
-
-//                 QList<QString> list =  QList<QString>(readerList.split('\0'));
-//                 int i = 0;
-//                            while ( i < list.count())
-//                            {
-//                                if (list.at(i).trimmed().length() > 0)
-//                                    i++;
-//                                else
-//                                    list.removeAt(i);
-//                            }
-//    qDebug() << "starts hehe";
-//                            qDebug() << list;
-                            //LPTSTR pReader = m_pmszReaders;
-//            while ( '\0' != *pReader )
-//            {
-//                // Display the value.
-//                printf("Reader1: %S\n", pReader );
-//                // Advance to the next value.
-//                pReader = pReader + wcslen((wchar_t *)pReader) + 1;
-//            }
-           // m_pmszReaders = m_pmszReaders + wcslen((wchar_t *)m_pmszReaders) + 1; // for acr122u picc
-
-//       else
-//       {
-//           if(choice) SCardListReaders(m_hContext, NULL, (LPTSTR)&m_pmszReaders, &m_cch )
-//           LPTSTR pReader = m_pmszReaders;
-//           while ( '\0' != *pReader )
-//           {
-//               // Display the value.
-//               printf("Reade2: %S\n", pReader );
-//               // Advance to the next value.
-//               pReader = pReader + wcslen((wchar_t *)pReader) + 1;
-//           } // for acr122u picc
-//       }
+    m_lRet =SCardListReaders(m_hContext, NULL, (LPTSTR)&m_pmszReaders, &m_cch);
 }
 LPTSTR SCardConnection::getReaderLists()
 {
@@ -130,29 +80,29 @@ void SCardConnection::setCardUID()
 QString SCardConnection::getCardUID()
 {
     QByteArray UID =  QByteArray(reinterpret_cast<char*>(m_cardUID), sizeof(m_cardUID)).toHex(' ').toUpper();
-    //QString UID = QString::fromUtf8(m_cardUID);
     QString UIDstring = QString(UID).toUpper();
     qDebug() << UIDstring;
     return UIDstring;
 }
-LONG SCardConnection::loadKey(BYTE *loadCommand)
+LONG SCardConnection::loadKey(BYTE *loadCommand)// will have a byte ptr return type to handle response
 {
     BYTE command[LOADCOMMAND_SIZE];
     for(int i = 0; i<static_cast<int>(LOADCOMMAND_SIZE); i++)
-    {command[i] = *(loadCommand+i);
-        printf("%X ",command[i]);
-    }
+        {
+            command[i] = *(loadCommand+i);
+            //printf("%X ",command[i]);
+        }
     memcpy(m_pbSend, command, LOADCOMMAND_SIZE);
     m_cbSend = LOADCOMMAND_SIZE;
     m_cbRecv = MAX_APDU_SIZE;
     if ((m_lRet = SCardTransmit(m_hCard, SCARD_PCI_T1, m_pbSend, m_cbSend, NULL, m_pbRecv, &m_cbRecv)) != SCARD_S_SUCCESS)
-    {
-        return m_lRet;
-}
-    printf("response: ");
-    for(int i = 0; i<m_cbRecv;i++)
-    printf("%X ",m_pbRecv[i]);
-        return m_lRet;
+        {
+            return m_lRet;
+        }
+//    printf("response: ");
+//    for(int i = 0; i<m_cbRecv;i++)
+//    printf("%X ",m_pbRecv[i]);
+//        return m_lRet;
 
 }
 LONG SCardConnection::authenticate(BYTE *authCommand)
@@ -184,7 +134,6 @@ QString SCardConnection::readDataBlock(BYTE *readCommand)
         return "";
 
         QByteArray blockAsByte =  QByteArray(reinterpret_cast<char*>(m_pbRecv), BLOCK_SIZE+RESPONSE_SIZE).toHex(' ').toUpper();
-        //QString UID = QString::fromUtf8(m_cardUID);
         QString blockString = QString(blockAsByte).toUpper();
         return blockString;
 }

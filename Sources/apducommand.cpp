@@ -1,6 +1,7 @@
 #include "Headers/apducommand.h"
 #include "Headers/commands.h"
 #include <cstdio>
+#include <QDebug>
 
 APDUCommand::APDUCommand()
 {
@@ -9,8 +10,9 @@ APDUCommand::APDUCommand()
     ,m_WriteCommand[WRITECOMMAND_SIZE] = {};
 
 }
+
 void APDUCommand::setLoadKeyCommand(const BYTE* key, const BYTE storageAddress)
-{printf("loadcommand: ");
+{//printf("loadcommand: ");
     for( int i=0; i<static_cast<int>(LOADCOMMAND_SIZE); i++)
     {
         switch (i)
@@ -28,13 +30,14 @@ void APDUCommand::setLoadKeyCommand(const BYTE* key, const BYTE storageAddress)
             m_LoadKeyCommand[i] = *(key+i-5);
             break; //0xFF, 0x82, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
          }
-    printf("%X ",m_LoadKeyCommand[i]);
+    //printf("%X ",m_LoadKeyCommand[i]);
     }
 }
 BYTE* APDUCommand::getLoadKeyCommand()
 {
     return m_LoadKeyCommand;
 }
+
 void APDUCommand::setAuthCommand(const BYTE block, const BYTE keySelect, const BYTE storageAddress)
 {
     for( int i=0; i<static_cast<int>(AUTHCOMMAND_SIZE); i++)
@@ -54,6 +57,7 @@ void APDUCommand::setAuthCommand(const BYTE block, const BYTE keySelect, const B
             m_AuthCommand[i] = storageAddress;
             break;
          }
+        qDebug() <<m_AuthCommand[i];
 
     }
 }
@@ -80,6 +84,7 @@ void APDUCommand::setReadCommand(const BYTE block)
             m_ReadCommand[i] = BLOCK_SIZE;
             break;
          }
+        qDebug() << m_ReadCommand[i];
     }
 }
 BYTE* APDUCommand::getReadCommand()
