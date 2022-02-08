@@ -19,7 +19,6 @@ void SCardOperations::setKeyA( const BYTE *_keyA )
 }
 BYTE* SCardOperations::getKeyA()
 {
-
     return  m_keyA;
 }
 

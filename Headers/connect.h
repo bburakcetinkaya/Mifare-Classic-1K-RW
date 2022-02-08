@@ -16,11 +16,11 @@ class SCardConnection
 public:
     static SCardConnection* getInstance();
     LONG establishContext();
-    void clearhContext();
+    void disconnectReader();
 
     void clearpmszReaders();
-    void setReaderLists(const bool choice);
-    /*QList<QString>*/LPTSTR  getReaderLists();
+    void setReaderLists();
+    LPTSTR  getReaderLists();
     void connectCard();
     void disconnectCard();
     void setCardUID();

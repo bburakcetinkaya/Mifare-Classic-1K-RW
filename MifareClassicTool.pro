@@ -10,6 +10,7 @@ CONFIG += c++17
 
 
 SOURCES += \
+    Sources/accessconditions.cpp \
     Sources/apducommand.cpp \
     Sources/connect.cpp \
     Sources/main.cpp \

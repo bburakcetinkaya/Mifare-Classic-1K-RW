@@ -36,7 +36,7 @@ BYTE* TextWindow::getInput()
 
     return m_inputByte;
 }
-void TextWindow::on_textWindowOK_clicked()
+void TextWindow::on_textWindowApply_clicked()
 {
     QString inputText = ((ui->textWindowText->text()).toLocal8Bit());
 
@@ -54,18 +54,28 @@ void TextWindow::on_textWindowOK_clicked()
     {
         case 0:
             m_keyAList = dataList;
-            emit keyAisReady();
+            emit keyAIsReady();
+
             break;
         case 1:
             m_keyBList = dataList;
-            emit keyBisReady();
+            emit keyBIsReady();
+
             break;
         case 2:
             m_dataList = dataList;
             emit listIsReady();
+
             break;
+        case 3:
+            m_utilityKey = dataList;
+            emit utilityKeyIsReady();
+
+            break;
+
     }
     this->close();
+    ui->textWindowText->clear();
 
 }
 QStringList TextWindow::getDataList()
@@ -88,6 +98,10 @@ QStringList TextWindow::getKeyB()
 {
     return m_keyBList;
 }
+QStringList TextWindow::getUtilityKey()
+{
+    return m_utilityKey;
+}
 void TextWindow::setTextWindowTextReadOnly(const bool choice)
 {
     ui->textWindowText->setReadOnly(choice);
@@ -96,10 +110,15 @@ void TextWindow::setTextAsAscii(const QString &textValue)
 {
     m_textValue = textValue;
     ui->textWindowText->setText(m_textValue);
+
 }
 void TextWindow::clearTextWindowText()
 {
     ui->textWindowText->clear();
 }
 
+void TextWindow::on_textWindowCancel_clicked()
+{
+    this->close();
+}
 

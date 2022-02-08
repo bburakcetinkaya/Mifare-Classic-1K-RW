@@ -3,6 +3,8 @@
 
 #include <QMainWindow>
 #include <QString>
+#include <winscard.h>
+#include <Headers/commands.h>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -19,12 +21,16 @@ public:
 
     void setReadOnlyReadBlocks();
     void applyDataToReadBLocks(const QStringList &dataList);
+    void printRawTable(const QVector<QStringList> &dataList, const bool formatSelect);
+    QVector<QStringList> authAndReadAllData(const QByteArray &_keyBytes,const BYTE &storageSelect,
+                                                                        const BYTE &keySelect);
 
 private slots:
 
     void on_connectReader_clicked();
+    void on_disconnectReader_clicked();
     void on_ConnectUID_clicked();
-    void on_ReleaseUID_clicked();
+    void on_disconnectUID_clicked();
 
     void on_loadTo0A_clicked();
     void on_loadTo1A_clicked();
@@ -84,6 +90,37 @@ private slots:
     void applyDataFromTextWindow();
     void applyDataFromTextWindowToKeyB();
     void applyDataFromTextWindowToKeyA();
+    void applyDataFromTextWindowToUtilityKey();
+
+    void on_valueBlockWrite_clicked();
+    void on_valueBlockInit_textChanged();
+
+    void on_readVB_clicked();
+    void on_decVB_clicked();
+    void on_incVB_clicked();
+
+    void on_utilityKCText_clicked();
+    void on_utilityKCFactory_clicked();
+
+    void on_utilityKC0_textChanged();
+    void on_utilityKC1_textChanged();
+    void on_utilityKC2_textChanged();
+    void on_utilityKC3_textChanged();
+    void on_utilityKC4_textChanged();
+    void on_utilityKC5_textChanged();
+
+    void on_utilityKCChange_clicked();
+
+    void on_blockSelect_valueChanged(int arg1);
+    void on_sectorSelect_valueChanged(int arg1);
+
+    void on_sectorBegin_valueChanged(int arg1);
+
+    void on_sectorEnd_valueChanged(int arg1);
+
+
+
+    void on_commandsClear_clicked();
 
 signals:
     //void listFromTextWindow(QStringList dataList);
@@ -91,8 +128,19 @@ signals:
 private:
     Ui::MainWindow *ui;
     QString getKeyA();
+    void setKeyA();
+
     QString getKeyB();
+    void setKeyB();
+
+    QString getUtilityKey();
+    void setUtilityKey();
+
+
     QString getWriteBlocks();
+    QString m_keyA;
+    QString m_keyB;
+    QString m_utilityKey;
 
 };
 #endif // MAINWINDOW_H

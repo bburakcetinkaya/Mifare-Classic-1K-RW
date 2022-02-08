@@ -19,6 +19,7 @@ public:
     QStringList getDataList();
     QStringList getKeyA();
     QStringList getKeyB();
+    QStringList getUtilityKey();
     BYTE* getInput();
     int getTextAreaSelect();
     void setTextAreaSelect(int selection);
@@ -30,7 +31,7 @@ public:
 
 
 public slots:
-    void on_textWindowOK_clicked();
+    void on_textWindowApply_clicked();
 
 private:
     static TextWindow *instance;
@@ -43,14 +44,18 @@ private:
     QStringList m_keyAList;
     QStringList m_keyBList;
     QString m_textValue;
+    QStringList m_utilityKey;
 
 
 
 signals:
     void listIsReady();
-    void keyAisReady();
-    void keyBisReady();
+    void keyAIsReady();
+    void keyBIsReady();
+    void utilityKeyIsReady();
 
+private slots:
+    void on_textWindowCancel_clicked();
 };
 
 #endif // TEXTWINDOW_H

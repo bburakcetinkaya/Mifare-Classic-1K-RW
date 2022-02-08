@@ -3,6 +3,16 @@
 // get input
 QString MainWindow::getKeyA()
 {
+
+    return m_keyA;
+}
+QString MainWindow::getKeyB()
+{
+
+    return m_keyB;
+}
+void MainWindow::setKeyA()
+{
     QString _keyA;
     _keyA.append ( (ui->keyA5->toPlainText()).toUtf8() );
     _keyA.append ( (ui->keyA4->toPlainText()).toUtf8() );
@@ -10,9 +20,9 @@ QString MainWindow::getKeyA()
     _keyA.append ( (ui->keyA2->toPlainText()).toUtf8() );
     _keyA.append ( (ui->keyA1->toPlainText()).toUtf8() );
     _keyA.append ( (ui->keyA0->toPlainText()).toUtf8() );
-    return _keyA;
+    m_keyA = _keyA;
 }
-QString MainWindow::getKeyB()
+void MainWindow::setKeyB()
 {
     QString _keyB;
     _keyB.append ( (ui->keyB5->toPlainText()).toUtf8() );
@@ -21,7 +31,22 @@ QString MainWindow::getKeyB()
     _keyB.append ( (ui->keyB2->toPlainText()).toUtf8() );
     _keyB.append ( (ui->keyB1->toPlainText()).toUtf8() );
     _keyB.append ( (ui->keyB0->toPlainText()).toUtf8() );
-    return _keyB;
+    m_keyB = _keyB;
+}
+void MainWindow::setUtilityKey()
+{
+    QString _key;
+    _key.append ( (ui->utilityKC5->toPlainText()).toUtf8() );
+    _key.append ( (ui->utilityKC4->toPlainText()).toUtf8() );
+    _key.append ( (ui->utilityKC3->toPlainText()).toUtf8() );
+    _key.append ( (ui->utilityKC2->toPlainText()).toUtf8() );
+    _key.append ( (ui->utilityKC1->toPlainText()).toUtf8() );
+    _key.append ( (ui->utilityKC0->toPlainText()).toUtf8() );
+     m_utilityKey = _key;
+}
+QString MainWindow::getUtilityKey()
+{
+    return m_utilityKey;
 }
 QString MainWindow::getWriteBlocks()
 {
@@ -785,6 +810,183 @@ void MainWindow::on_R0_textChanged()
         }
 }
 
+void MainWindow::on_utilityKC5_textChanged()
+{
+    QString text = ui->utilityKC5->toPlainText().toUpper();
+    text.replace(QRegExp("[^0-F]"), "") ;
+    QStringList tokens;
+        for(int i = 0; i < text.length(); i += 2)
+        {
+          tokens << text.mid(i, 2);
+        }
+    ui->utilityKC5->blockSignals(true);
+    ui->utilityKC5->setText(tokens.join(" "));
+    ui->utilityKC5->moveCursor(QTextCursor::EndOfBlock);
+    ui->utilityKC5->blockSignals(false);
+
+    if(ui->utilityKC5->toPlainText().length() > 2)
+        {
+        int diff = ui->utilityKC5->toPlainText().length() - 2; //m_maxTextEditLength - just an integer
+        QString newStr = ui->utilityKC5->toPlainText();
+        newStr.chop(diff);
+        ui->utilityKC5->setText(newStr);
+        QTextCursor cursor(ui->utilityKC5->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+        ui->utilityKC5->setTextCursor(cursor);
+        }
+}
+void MainWindow::on_utilityKC4_textChanged()
+{
+    QString text = ui->utilityKC4->toPlainText().toUpper();
+    text.replace(QRegExp("[^0-F]"), "") ;
+    QStringList tokens;
+        for(int i = 0; i < text.length(); i += 2)
+        {
+          tokens << text.mid(i, 2);
+        }
+    ui->utilityKC4->blockSignals(true);
+    ui->utilityKC4->setText(tokens.join(" "));
+    ui->utilityKC4->moveCursor(QTextCursor::EndOfBlock);
+    ui->utilityKC4->blockSignals(false);
+
+    if(ui->utilityKC4->toPlainText().length() > 2)
+        {
+        int diff = ui->utilityKC4->toPlainText().length() - 2; //m_maxTextEditLength - just an integer
+        QString newStr = ui->utilityKC4->toPlainText();
+        newStr.chop(diff);
+        ui->utilityKC4->setText(newStr);
+        QTextCursor cursor(ui->utilityKC4->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+        ui->utilityKC4->setTextCursor(cursor);
+        }
+}
+void MainWindow::on_utilityKC3_textChanged()
+{
+    QString text = ui->utilityKC3->toPlainText().toUpper();
+    text.replace(QRegExp("[^0-F]"), "") ;
+    QStringList tokens;
+        for(int i = 0; i < text.length(); i += 2)
+        {
+          tokens << text.mid(i, 2);
+        }
+    ui->utilityKC3->blockSignals(true);
+    ui->utilityKC3->setText(tokens.join(" "));
+    ui->utilityKC3->moveCursor(QTextCursor::EndOfBlock);
+    ui->utilityKC3->blockSignals(false);
+
+    if(ui->utilityKC3->toPlainText().length() > 2)
+        {
+        int diff = ui->utilityKC3->toPlainText().length() - 2; //m_maxTextEditLength - just an integer
+        QString newStr = ui->utilityKC3->toPlainText();
+        newStr.chop(diff);
+        ui->utilityKC3->setText(newStr);
+        QTextCursor cursor(ui->utilityKC3->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+        ui->utilityKC3->setTextCursor(cursor);
+        }
+}
+void MainWindow::on_utilityKC2_textChanged()
+{
+    QString text = ui->utilityKC2->toPlainText().toUpper();
+    text.replace(QRegExp("[^0-F]"), "") ;
+    QStringList tokens;
+        for(int i = 0; i < text.length(); i += 2)
+        {
+          tokens << text.mid(i, 2);
+        }
+    ui->utilityKC2->blockSignals(true);
+    ui->utilityKC2->setText(tokens.join(" "));
+    ui->utilityKC2->moveCursor(QTextCursor::EndOfBlock);
+    ui->utilityKC2->blockSignals(false);
+
+    if(ui->utilityKC2->toPlainText().length() > 2)
+        {
+        int diff = ui->utilityKC2->toPlainText().length() - 2; //m_maxTextEditLength - just an integer
+        QString newStr = ui->utilityKC2->toPlainText();
+        newStr.chop(diff);
+        ui->utilityKC2->setText(newStr);
+        QTextCursor cursor(ui->utilityKC2->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+        ui->utilityKC2->setTextCursor(cursor);
+        }
+}
+void MainWindow::on_utilityKC1_textChanged()
+{
+    QString text = ui->utilityKC1->toPlainText().toUpper();
+    text.replace(QRegExp("[^0-F]"), "") ;
+    QStringList tokens;
+        for(int i = 0; i < text.length(); i += 2)
+        {
+          tokens << text.mid(i, 2);
+        }
+    ui->utilityKC1->blockSignals(true);
+    ui->utilityKC1->setText(tokens.join(" "));
+    ui->utilityKC1->moveCursor(QTextCursor::EndOfBlock);
+    ui->utilityKC1->blockSignals(false);
+
+    if(ui->utilityKC1->toPlainText().length() > 2)
+        {
+        int diff = ui->utilityKC1->toPlainText().length() - 2; //m_maxTextEditLength - just an integer
+        QString newStr = ui->utilityKC1->toPlainText();
+        newStr.chop(diff);
+        ui->utilityKC1->setText(newStr);
+        QTextCursor cursor(ui->utilityKC1->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+        ui->utilityKC1->setTextCursor(cursor);
+        }
+}
+void MainWindow::on_utilityKC0_textChanged()
+{
+    QString text = ui->utilityKC0->toPlainText().toUpper();
+    text.replace(QRegExp("[^0-F]"), "") ;
+    QStringList tokens;
+        for(int i = 0; i < text.length(); i += 2)
+        {
+          tokens << text.mid(i, 2);
+        }
+    ui->utilityKC0->blockSignals(true);
+    ui->utilityKC0->setText(tokens.join(" "));
+    ui->utilityKC0->moveCursor(QTextCursor::EndOfBlock);
+    ui->utilityKC0->blockSignals(false);
+
+    if(ui->utilityKC0->toPlainText().length() > 2)
+        {
+        int diff = ui->utilityKC0->toPlainText().length() - 2; //m_maxTextEditLength - just an integer
+        QString newStr = ui->utilityKC0->toPlainText();
+        newStr.chop(diff);
+        ui->utilityKC0->setText(newStr);
+        QTextCursor cursor(ui->utilityKC0->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+        ui->utilityKC0->setTextCursor(cursor);
+        }
+}
+
+void MainWindow::on_valueBlockInit_textChanged()
+{
+    QString text = ui->R0->toPlainText().toUpper();
+    text.replace(QRegExp("[^0-F]"), "") ;
+    QStringList tokens;
+        for(int i = 0; i < text.length(); i += 2)
+        {
+          tokens << text.mid(i, 2);
+        }
+    ui->R0->blockSignals(true);
+    ui->R0->setText(tokens.join(" "));
+    ui->R0->moveCursor(QTextCursor::EndOfBlock);
+    ui->R0->blockSignals(false);
+
+    if(ui->R0->toPlainText().length() > 2)
+        {
+        int diff = ui->R0->toPlainText().length() - 2; //m_maxTextEditLength - just an integer
+        QString newStr = ui->R0->toPlainText();
+        newStr.chop(diff);
+        ui->R0->setText(newStr);
+        QTextCursor cursor(ui->R0->textCursor());
+        cursor.movePosition(QTextCursor::End, QTextCursor::MoveAnchor);
+        ui->R0->setTextCursor(cursor);
+        }
+}
+
 void MainWindow::setReadOnlyReadBlocks()
 {
 
@@ -877,6 +1079,40 @@ void MainWindow::applyDataFromTextWindow()
     //ui->R0->setEnabled(choice::set);
     ui->R0 ->setText(dataList.at(15));
 
+}
+void MainWindow::applyDataFromTextWindowToUtilityKey()
+{
+    TextWindow* txtwnd = TextWindow::getInstance();
+    QStringList dataList = txtwnd->getUtilityKey();
+    ui->utilityKC5->setText(dataList.at(0));
+    ui->utilityKC4->setText(dataList.at(1));
+    ui->utilityKC3->setText(dataList.at(2));
+    ui->utilityKC2->setText(dataList.at(3));
+    ui->utilityKC1->setText(dataList.at(4));
+    ui->utilityKC0->setText(dataList.at(5));
+}
+
+void MainWindow::on_blockSelect_valueChanged(int arg1)
+{
+    ui->sectorSelect->setValue(arg1/4);
+}
+void MainWindow::on_sectorSelect_valueChanged(int arg1)
+{
+    ui->blockSelect->setValue(arg1*4);
+    //if(ui->blockSelect->value() ==)
+}
+
+void MainWindow::on_sectorBegin_valueChanged(int arg1)
+{
+
+    if((ui->sectorBegin->value())>=(ui->sectorEnd->value()))
+        ui->sectorEnd->setValue(arg1);
+}
+void MainWindow::on_sectorEnd_valueChanged(int arg1)
+{
+
+    if((ui->sectorBegin->value())>=(ui->sectorEnd->value()))
+        ui->sectorBegin->setValue(arg1);
 }
 
 void MainWindow::on_RWClear_clicked()

@@ -7,7 +7,7 @@ class APDUCommand
 {
 public:
     APDUCommand();
-    void setAuthCommand(const BYTE block, const BYTE keySelect, const BYTE storageAddress);
+    void setAuthCommand(const BYTE block, const BYTE keySelect);
     BYTE* getAuthCommand();
 
     void setReadCommand(const BYTE block);
@@ -19,11 +19,17 @@ public:
     void setLoadKeyCommand(const BYTE* key, const BYTE storageAddress);
     BYTE* getLoadKeyCommand();
 
+    void setValueBlockCommand(const BYTE block,const BYTE *value);
+    void setReadValueBlockCommand(const BYTE block);
+
+    void setIncDecCommand(const BYTE selection, const BYTE block);
+    BYTE* getIncrDecrCommand();
 private:
     BYTE m_AuthCommand[AUTHCOMMAND_SIZE];
     BYTE m_ReadCommand[READCOMMAND_SIZE];
     BYTE m_LoadKeyCommand[LOADCOMMAND_SIZE];
     BYTE m_WriteCommand[WRITECOMMAND_SIZE];
+    BYTE m_IncrDecrCommand[DECINCCOMMAND_SIZE];
 
 
 };

@@ -36,7 +36,7 @@
     <string>Enter text</string>
    </property>
   </widget>
-  <widget class="QPushButton" name="textWindowOK">
+  <widget class="QPushButton" name="textWindowApply">
    <property name="geometry">
     <rect>
      <x>200</x>
@@ -46,7 +46,20 @@
     </rect>
    </property>
    <property name="text">
-    <string>OK</string>
+    <string>Apply</string>
+   </property>
+  </widget>
+  <widget class="QPushButton" name="textWindowCancel">
+   <property name="geometry">
+    <rect>
+     <x>115</x>
+     <y>45</y>
+     <width>80</width>
+     <height>20</height>
+    </rect>
+   </property>
+   <property name="text">
+    <string>Cancel</string>
    </property>
   </widget>
  </widget>
