@@ -1094,12 +1094,11 @@ void MainWindow::applyDataFromTextWindowToUtilityKey()
 
 void MainWindow::on_blockSelect_valueChanged(int arg1)
 {
-    ui->sectorSelect->setValue(arg1/4);
+     ui->sectorSelect->setValue(arg1/4);
 }
 void MainWindow::on_sectorSelect_valueChanged(int arg1)
 {
-    ui->blockSelect->setValue(arg1*4);
-    //if(ui->blockSelect->value() ==)
+
 }
 
 void MainWindow::on_sectorBegin_valueChanged(int arg1)
@@ -1136,4 +1135,75 @@ void MainWindow::on_RWClear_clicked()
     ui->R0 ->clear(); ui->R0 ->setReadOnly(choice::clear);
     txtwnd->setTextWindowTextReadOnly(false);
     txtwnd->clearTextWindowText();
+}
+void MainWindow::on_decVB_clicked()
+{
+    SCardConnection* connect = SCardConnection::getInstance();
+    APDUCommand apdu{};
+
+    QString blockString = (ui->blockSelect->text());
+    connect->setBlockNum(blockString);
+    apdu.setIncDecCommand(DECREMENT_SELECT, connect->getBlockNum());
+    LONG lRet = connect->incrDecrValueBlock(apdu.getIncrDecrCommand());
+    BYTE* response = connect->getResponse();
+    if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
+    {
+        ui->statusVB->setText("Failed  to decrement !");
+        ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
+         ui->commandTextWindow->append("DecrementValueBlock();");
+        return;
+    }
+
+            ui->statusVB->setText("Value decremented successfully.");
+            ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : green; }");
+            ui->commandTextWindow->append("DecrementValueBlock();");
+}
+void MainWindow::on_incVB_clicked()
+{
+    SCardConnection* connect = SCardConnection::getInstance();
+    APDUCommand apdu{};
+
+    QString blockString = (ui->blockSelect->text());
+    connect->setBlockNum(blockString);
+    //apdu.setIncDecCommand(INCREMENT_SELECT, connect->getBlockNum());
+    LONG lRet = connect->incrDecrValueBlock(apdu.getIncrDecrCommand());
+    BYTE* response = connect->getResponse();
+    if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
+    {
+        ui->statusVB->setText("Failed  to increment !");
+        ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
+         ui->commandTextWindow->append("IncrementValueBlock();");
+        return;
+    }
+
+            ui->statusVB->setText("Value incremented successfully.");
+            ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : green; }");
+            ui->commandTextWindow->append("IncrementValueBlock();");
+}
+
+
+void MainWindow::on_utilityKCText_clicked()
+{
+    TextWindow* txtwnd = TextWindow::getInstance();
+    txtwnd->show();
+    txtwnd->setTextAreaSelect(3);
+    txtwnd->setInputMaxSize(KEY_SIZE);
+}
+void MainWindow::on_utilityKCFactory_clicked()
+{
+    ui->utilityKC0->setText("FF");
+    ui->utilityKC1->setText("FF");
+    ui->utilityKC2->setText("FF");
+    ui->utilityKC3->setText("FF");
+    ui->utilityKC4->setText("FF");
+    ui->utilityKC5->setText("FF");
+}
+void MainWindow::on_utilityKCTextClear_clicked()
+{
+    ui->utilityKC0->clear();
+    ui->utilityKC1->clear();
+    ui->utilityKC2->clear();
+    ui->utilityKC3->clear();
+    ui->utilityKC4->clear();
+    ui->utilityKC5->clear();
 }

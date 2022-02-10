@@ -128,14 +128,75 @@ LONG SCardConnection::readDataBlock(BYTE *readCommand)
     {
         SCardConnection::setResponse(m_pbRecv+BLOCK_SIZE);
 
-        QByteArray blockAsByte =  QByteArray(reinterpret_cast<char*>(m_pbRecv), BLOCK_SIZE).toHex(' ').toUpper();
-        m_blockDataString = QString(blockAsByte).toUpper();
+        m_blockAsByte =  QByteArray(reinterpret_cast<char*>(m_pbRecv), BLOCK_SIZE).toHex(' ').toUpper();
+        m_blockDataString = QString(m_blockAsByte).toUpper();
     }
+    return m_lRet;
+}
+QByteArray SCardConnection::getBlockAsByte()
+{
+    return m_blockAsByte;
+}
+LONG SCardConnection::readValueBlock(BYTE* readValueBlockCommand)
+{
+    BYTE command[READCOMMAND_SIZE] = {};
+    for(int i = 0; i<static_cast<int>(READCOMMAND_SIZE); i++) command[i] = *(readValueBlockCommand+i);
+
+    for(int i = 0; i<static_cast<int>(MAX_APDU_SIZE); i++) m_pbRecv[i] = 0x00; // clear recieve var
+
+    memcpy(m_pbSend, command, READCOMMAND_SIZE); m_cbSend = READCOMMAND_SIZE; m_cbRecv = MAX_APDU_SIZE;
+    m_lRet = SCardTransmit(m_hCard, SCARD_PCI_T1, m_pbSend, m_cbSend, NULL, m_pbRecv, &m_cbRecv);
+
+    if(m_cbRecv == RESPONSE_SIZE)
+        SCardConnection::setResponse(m_pbRecv);
+    else
+    {
+        SCardConnection::setResponse(m_pbRecv+4);
+
+       BYTE byteValue[4];
+//       m_value;
+       for(DWORD i = 0; i<4 ; i++)
+           byteValue[3-i] = m_pbRecv[i];
+
+       QByteArray calcHelper;
+       for(int i = 0; i<4; i++)
+       {
+
+       calcHelper.append(byteValue[i]);
+       }
+       qDebug() << "calcHelper: "<<calcHelper;
+       QString calc = QString(calcHelper.toHex());
+       qDebug() << "calc: "<<calc;
+       bool ok;
+       m_value = (calc.toLong(&ok,16));
+       qDebug() << "m_value: "<<m_value;
+
+    }
+    return m_lRet;
+
+}
+LONG SCardConnection::incrDecrValueBlock(BYTE* incrDecrCommand)
+{
+    BYTE command[19] = {};
+    for(int i = 0; i<static_cast<int>(19); i++) command[i] = *(incrDecrCommand+i);
+
+    for(int i = 0; i<static_cast<int>(MAX_APDU_SIZE); i++) m_pbRecv[i] = 0x00; // clear recieve var
+
+    memcpy(m_pbSend, command, 19); m_cbSend = 19; m_cbRecv = MAX_APDU_SIZE;
+    m_lRet = SCardTransmit(m_hCard, SCARD_PCI_T1, m_pbSend, m_cbSend, NULL, m_pbRecv, &m_cbRecv);
+
+
+    SCardConnection::setResponse(m_pbRecv);
+
     return m_lRet;
 }
 QString SCardConnection::getReadDataBlockString()
 {
     return m_blockDataString;
+}
+long int SCardConnection::getValue()
+{
+    return m_value;
 }
 
 void SCardConnection::setBlockNum(const QString &blockAsString)

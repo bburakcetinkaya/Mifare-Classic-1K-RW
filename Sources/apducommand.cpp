@@ -182,27 +182,28 @@ void APDUCommand::setValueBlockCommand(const BYTE block,const BYTE *value)
  }
 void APDUCommand::setIncDecCommand(const BYTE selection, const BYTE block)
 {//printf("loadcommand: ");
-    for( int i=0; i<static_cast<int>(LOADCOMMAND_SIZE); i++)
-    {////FF FC 00 00 06 C1 1E 01 00 00 00
-        switch (i)
-        {
-        case 0:       case 1:       case 2:     case 3:     case 4:
-            m_IncrDecrCommand[i] = incDecCommand1[i];
-            break;
-        case 5:
-            m_IncrDecrCommand[i] = selection;
-            break;
-        case 6:
-            m_IncrDecrCommand[i] = block;
-            break;
-        case 7:       case 8:       case 9:       case 10:
-            m_IncrDecrCommand[i] = incDecCommand2[i-7];
-            break;
-         }
-        qDebug() << m_IncrDecrCommand[i];
+//    for( int i=0; i<static_cast<int>(DECINCCOMMAND_SIZE); i++)
+//    {////FF FC 00 00 06 C1 1E 01 00 00 00
+//        switch (i)
+//        {
+//        case 0:       case 1:case 2:case 3:case 4:
+//            m_IncrDecrCommand[i] = incDecCommand1[i];
+//            break;
+//        case 5:
+//            m_IncrDecrCommand[i] = selection;
+//            break;
+//        case 6:
+//            m_IncrDecrCommand[i] = block;
+//            break;
+//        case 7: case 8: case 9: case 10:
+//            m_IncrDecrCommand[i] = incDecCommand2[i-7];
+//            break;
+//         }
+    //m_IncrDecrCommand[] = {0xFF, 0xC2, 0x00, 0x03, 0x0E, 0xA1, 0x0C, 0x80, 0x01, 0x38,  0x80, 0x01, 0x37, 0x81, 0x04, 0x01, 0x00, 0x00, 0x00};
+        //qDebug() << m_IncrDecrCommand[i];
 
     //printf("%X ",m_LoadKeyCommand[i]);
-    }
+    //}
 }
 
  BYTE* APDUCommand::getWriteCommand()

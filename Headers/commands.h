@@ -9,13 +9,13 @@
 inline constexpr DWORD MAX_APDU_SIZE = 255;
 inline constexpr DWORD RESPONSE_SIZE = 2;
 inline constexpr DWORD UID_SIZE = 4;
-inline constexpr BYTE  KEY_SIZE = 0x06;
+inline constexpr DWORD  KEY_SIZE = 6;
 inline constexpr DWORD AUTHCOMMAND_SIZE = 10;
 inline constexpr DWORD READCOMMAND_SIZE = 5;
 inline constexpr DWORD ACCESSBITS_SIZE = 3;
 inline constexpr BYTE  LOADCOMMAND_SIZE = 0x0B;
 inline constexpr DWORD WRITECOMMAND_SIZE = 21;
-inline constexpr BYTE  DECINCCOMMAND_SIZE = 0x0B;
+inline constexpr DWORD  DECINCCOMMAND_SIZE = 11;
 inline constexpr DWORD BLOCK_SIZE = 16;
 inline constexpr DWORD TOTALBLOCK_SIZE = 64;
 inline constexpr BYTE  V_MEMORY = 0x00;
@@ -31,9 +31,10 @@ inline constexpr BYTE  SUCCESS_RESPONSE[] = {0x90,0x00};
 inline constexpr BYTE  readValueBlock[] = {0xFF, 0xB1, 0x00};
 inline constexpr BYTE  incDecCommand1[] = { 0xFF, 0xFC, 0x00, 0x00, 0x06};
 inline constexpr BYTE  incDecCommand2[] = { 0x01, 0x00, 0x00, 0x00};
+inline constexpr BYTE  RESTORE_SELECT = 0xC2;
 inline constexpr BYTE  INCREMENT_SELECT = 0xC1;
 inline constexpr BYTE  DECREMENT_SELECT = 0xC0;
-inline constexpr BYTE  TRANSPORT_CONFIG[] = {0x00};
+inline constexpr BYTE  TRANSPORT_CONFIG[] = {0x00}; //???
 
 
 inline constexpr BYTE mask0{ 0x01 }; // hex for 0000 0001

@@ -27,6 +27,7 @@ public:
     QString getCardUID();
     QString getReadDataBlockString();
 
+
     BYTE    getBlockNum();
     void    setBlockNum(const QString &blockAsString);
 
@@ -37,6 +38,13 @@ public:
 
     void    setResponse(BYTE* response);
     BYTE*   getResponse();
+
+    LONG    readValueBlock(BYTE* readValueBlockCommand);
+    long int getValue();
+
+    QByteArray getBlockAsByte();
+
+    LONG incrDecrValueBlock(BYTE* command);
 
 
 
@@ -60,7 +68,9 @@ private:
     QString         m_blockDataString;
     QList<QString>  m_readerList;
     BYTE            m_response[RESPONSE_SIZE];
-
+    QString         m_valueBlockAsString;
+    long int        m_value;
+    QByteArray      m_blockAsByte;
 };
 
 #endif // CONNECT_H

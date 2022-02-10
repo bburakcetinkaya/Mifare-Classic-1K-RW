@@ -134,6 +134,8 @@ private slots:
 
     void on_accessConditionSTChange_clicked();
 
+    void on_utilityKCTextClear_clicked();
+
 signals:
     //void listFromTextWindow(QStringList dataList);
 

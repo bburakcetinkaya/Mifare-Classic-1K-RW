@@ -503,12 +503,8 @@ QVector<QStringList> MainWindow::authAndReadAllData(const QByteArray &_keyBytes,
                 response = connect->getResponse();
                 if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
                 {
-
-                    for(int j = 4 ; j>0 ; j-- )
-                    {
                         for(DWORD k = 0 ; k<BLOCK_SIZE ; k++ )recievedData.push_front(" \0 ");
-                        i++;
-                    }
+
                 }
 
             }
@@ -518,9 +514,8 @@ QVector<QStringList> MainWindow::authAndReadAllData(const QByteArray &_keyBytes,
             response = connect->getResponse();
             if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
                 {
-                    for(DWORD k = 0 ; k<BLOCK_SIZE-1 ; k++ )
-                        recievedData.append(" \0 ");
-                }
+                    for(DWORD k = 0 ; k<BLOCK_SIZE-1 ; k++ )  recievedData.append(" \0 ");
+                 }
             else
                 {
                 recievedData = connect->getReadDataBlockString();
@@ -650,23 +645,37 @@ void MainWindow::on_valueBlockWrite_clicked()
 {
     SCardConnection* connect = SCardConnection::getInstance();
     APDUCommand apdu{};
-    QString _valueBlock;
-    _valueBlock.append ( (ui->valueBlockInit->toPlainText()).toUtf8() );
+    QString blockString = (ui->blockSelect->text());
+    if((blockString.toInt()+1)%4 == 0 )
+    {
+        ui->statusVB->setText("Cannot format sector trailer as value block!");
+        ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
+        ui->commandTextWindow->append("FormatAsValueBlockWithInıtial()");
+    }
+    QString valueStr =( (ui->valueBlockInit->toPlainText()).toLocal8Bit() );
     QString valueHexStr;
-    valueHexStr.setNum(_valueBlock.toInt(),16);
+    valueHexStr.setNum(valueStr.toInt(),16);
     if(valueHexStr.length() %2)   valueHexStr.insert(0,QLatin1String("0"));
     valueHexStr = valueHexStr.toUpper();
     QByteArray blockHexByteArray = QByteArray::fromHex(valueHexStr.toLatin1());
-    BYTE valueNum[4];
-    for(int i=0; i<4; i++)
-    valueNum[i] = blockHexByteArray[i];
+    BYTE valueNum[4]{0x00, 0x00, 0x00, 0x00};
+    std::reverse(blockHexByteArray.begin(),blockHexByteArray.end());
+    qDebug() << blockHexByteArray;
+    qDebug() << blockHexByteArray.length();
+//    qDebug() <<
+    for( int i = 0; i<blockHexByteArray.length();i++)
+    {
+        valueNum[i] |= (BYTE)blockHexByteArray[i];
 
-    QString blockString = (ui->blockSelect->text());
+    }
+
+
     connect->setBlockNum(blockString);
+
     apdu.setValueBlockCommand(connect->getBlockNum(),valueNum);
-    BYTE *response;
+
     LONG lRet = connect->writeDataBlock(apdu.getWriteCommand());
-    response = connect->getResponse();
+    BYTE *response = connect->getResponse();
     if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
     {
       ui->statusVB->setText("Failed to format as value block!");
@@ -684,60 +693,32 @@ void MainWindow::on_readVB_clicked()
     APDUCommand apdu{};
     SCardConnection* connect = SCardConnection::getInstance();
     QString blockString = (ui->blockSelect->text());
+
     connect->setBlockNum(blockString);
     apdu.setReadValueBlockCommand(connect->getBlockNum());
-    QString receivedData;
-    BYTE *response;
-    LONG lRet = connect->readDataBlock(apdu.getReadCommand());
-    response = connect->getResponse();
+
+
+    LONG lRet = connect->readValueBlock(apdu.getReadCommand());
+    BYTE *response = connect->getResponse();
     if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
     {
-        receivedData = "Fail!";
-
+        ui->textVB->setText("Fail!");
     }
-    else receivedData = connect->getReadDataBlockString();
-//    int value = 0;
-//    for(int i=0;i<4;i++)
-//        value = value + (recievedData.number(i)).toInt();
-    ui->textVB->setText(/*QString(value)*/receivedData);
+    else
+       {
 
+    int receivedData = connect->getValue();
+    qDebug() << receivedData;
+    QString valueStr = QString::number(receivedData);
+    //int value = valueStr.toInt();
 
-}
-void MainWindow::on_decVB_clicked()
-{
-    APDUCommand apdu{};
-    SCardConnection* connect = SCardConnection::getInstance();
-    QString blockString = (ui->blockSelect->text());
-    connect->setBlockNum(blockString);
-    apdu.setIncDecCommand(DECREMENT_SELECT, connect->getBlockNum());
-    connect->loadKey(apdu.getIncrDecrCommand());
-}
-void MainWindow::on_incVB_clicked()
-{
-    APDUCommand apdu{};
-    SCardConnection* connect = SCardConnection::getInstance();
-    QString blockString = (ui->blockSelect->text());
-    connect->setBlockNum(blockString);
-    apdu.setIncDecCommand(INCREMENT_SELECT, connect->getBlockNum());
-    connect->loadKey(apdu.getIncrDecrCommand());
+//   for(int i=0;i<4;i++)
+//        value = value + receivedData.toInt();
+    ui->textVB->setText(/*QString(value)*/valueStr);
+        }
+
 }
 
-void MainWindow::on_utilityKCText_clicked()
-{
-    TextWindow* txtwnd = TextWindow::getInstance();
-    txtwnd->show();
-    txtwnd->setTextAreaSelect(3);
-    txtwnd->setInputMaxSize(KEY_SIZE);
-}
-void MainWindow::on_utilityKCFactory_clicked()
-{
-    ui->utilityKC0->setText("FF");
-    ui->utilityKC1->setText("FF");
-    ui->utilityKC2->setText("FF");
-    ui->utilityKC3->setText("FF");
-    ui->utilityKC4->setText("FF");
-    ui->utilityKC5->setText("FF");
-}
 
 void MainWindow::on_utilityKCChange_clicked()
 {
@@ -777,7 +758,7 @@ void MainWindow::on_utilityKCChange_clicked()
         apdu.setLoadKeyCommand(scrdops.getKeyB() , V_MEMORY);
     }
     LONG lRet = connect->loadKey(apdu.getLoadKeyCommand());
-    BYTE* response;
+    BYTE* response = connect->getResponse();
     if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
     {
      return;
@@ -804,33 +785,46 @@ void MainWindow::on_utilityKCChange_clicked()
                 {
                     return;
                 }
-                QString sectorTrailer = connect->getReadDataBlockString();
-                qDebug() << "before change: " <<sectorTrailer;
+               for( int i=0 ; i<static_cast<int>(BLOCK_SIZE) ; i++ )
+               {
+                   qDebug() << "before change: " <<*(m_sectorTrailer+i);
+               }
+
 
                 MainWindow::setUtilityKey();
                 MainWindow::getUtilityKey();
                 QString _key = MainWindow::getUtilityKey();
-//                QByteArray _keyBytes = QByteArray::fromHex(_key.toLatin1());
+                QByteArray _keyBytes = QByteArray::fromHex(_key.toLatin1());
 
-//                for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
-//                {
-//                    key[i] = _keyBytes[i];
-//                }
+                for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
+                {
+                    key[i] = _keyBytes[i];
+                    qDebug()<<key[i];
+                }
                 if(changeKey == ui->utilityChangeKeyA)
                     {
-                        for(int i = 0; i<KEY_SIZE; i++)
+                        for(int i = 0; i<static_cast<int>(KEY_SIZE); i++)
                         {
-                           sectorTrailer[i] = _key[i];
+                           m_sectorTrailer[i] = key[i];
                         }
                     }
                 if(changeKey == ui->utilityChangeKeyB)
                     {
-                        for(int i = 0; i<KEY_SIZE; i++)
+                        for(int i = 10; i<(10+static_cast<int>(KEY_SIZE)) ; i++)
                         {
-                           sectorTrailer[KEY_SIZE - i] = _key[KEY_SIZE - i];
+                           m_sectorTrailer[i] = key[i-10];
                         }
                     }
-                qDebug() <<"after change: " <<sectorTrailer;
+                for( int i=0 ; i<static_cast<int>(BLOCK_SIZE) ; i++ )
+                {
+                    qDebug() << "after change: " <<*(m_sectorTrailer+i);
+                }
+                QByteArray asd = connect->getBlockAsByte();
+                qDebug() << asd;
+                for(int i = 10; i<(10+static_cast<int>(BLOCK_SIZE)) ; i++)
+                {
+                   m_sectorTrailer[i] = asd[i];
+                }
         }
 }
 
@@ -1173,4 +1167,7 @@ void MainWindow::on_accessConditionSTChange_clicked()
 {
     MainWindow::on_accessConditionDBChange_clicked();
 }
+
+
+
 

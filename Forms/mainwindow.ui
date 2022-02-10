@@ -25,6 +25,9 @@
   <property name="windowTitle">
    <string>Mifare Classic Tool</string>
   </property>
+  <property name="toolButtonStyle">
+   <enum>Qt::ToolButtonIconOnly</enum>
+  </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QTabWidget" name="tabs">
     <property name="enabled">
@@ -45,7 +48,7 @@
      <enum>QTabWidget::Rounded</enum>
     </property>
     <property name="currentIndex">
-     <number>2</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="Operations">
      <property name="autoFillBackground">
@@ -115,6 +118,12 @@
           <height>23</height>
          </rect>
         </property>
+        <property name="readOnly">
+         <bool>true</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::NoButtons</enum>
+        </property>
         <property name="maximum">
          <number>15</number>
         </property>
@@ -141,8 +150,23 @@
           <height>23</height>
          </rect>
         </property>
+        <property name="wrapping">
+         <bool>false</bool>
+        </property>
+        <property name="buttonSymbols">
+         <enum>QAbstractSpinBox::PlusMinus</enum>
+        </property>
+        <property name="accelerated">
+         <bool>true</bool>
+        </property>
+        <property name="showGroupSeparator" stdset="0">
+         <bool>false</bool>
+        </property>
         <property name="maximum">
          <number>63</number>
+        </property>
+        <property name="stepType">
+         <enum>QAbstractSpinBox::DefaultStepType</enum>
         </property>
        </widget>
       </widget>
@@ -1105,6 +1129,9 @@
           <height>31</height>
          </rect>
         </property>
+        <property name="inputMethodHints">
+         <set>Qt::ImhDigitsOnly</set>
+        </property>
         <property name="lineWrapMode">
          <enum>QTextEdit::NoWrap</enum>
         </property>
@@ -1114,7 +1141,7 @@
          <rect>
           <x>350</x>
           <y>20</y>
-          <width>121</width>
+          <width>401</width>
           <height>31</height>
          </rect>
         </property>
@@ -2244,6 +2271,19 @@
          <string>Change Now</string>
         </property>
        </widget>
+       <widget class="QPushButton" name="utilityKCTextClear">
+        <property name="geometry">
+         <rect>
+          <x>530</x>
+          <y>20</y>
+          <width>51</width>
+          <height>31</height>
+         </rect>
+        </property>
+        <property name="text">
+         <string>CLEAR</string>
+        </property>
+       </widget>
       </widget>
      </widget>
     </widget>
@@ -2493,10 +2533,10 @@
  <resources/>
  <connections/>
  <buttongroups>
-  <buttongroup name="rawFormatSelectGroup"/>
+  <buttongroup name="rawKeySelectGroup"/>
   <buttongroup name="buttonGroup_5"/>
   <buttongroup name="utilityUsingKeyGroup"/>
-  <buttongroup name="rawKeySelectGroup"/>
+  <buttongroup name="rawFormatSelectGroup"/>
   <buttongroup name="utilityChangeKeyGroup"/>
  </buttongroups>
 </ui>
