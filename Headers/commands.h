@@ -9,20 +9,22 @@
 inline constexpr DWORD MAX_APDU_SIZE = 255;
 inline constexpr DWORD RESPONSE_SIZE = 2;
 inline constexpr DWORD UID_SIZE = 4;
-inline constexpr BYTE KEY_SIZE = 0x06;
+inline constexpr BYTE  KEY_SIZE = 0x06;
 inline constexpr DWORD AUTHCOMMAND_SIZE = 10;
 inline constexpr DWORD READCOMMAND_SIZE = 5;
-inline constexpr BYTE LOADCOMMAND_SIZE = 0x0B;
+inline constexpr DWORD ACCESSBITS_SIZE = 3;
+inline constexpr BYTE  LOADCOMMAND_SIZE = 0x0B;
 inline constexpr DWORD WRITECOMMAND_SIZE = 21;
 inline constexpr BYTE  DECINCCOMMAND_SIZE = 0x0B;
-inline constexpr BYTE  BLOCK_SIZE = 0x10;
+inline constexpr DWORD BLOCK_SIZE = 16;
+inline constexpr DWORD TOTALBLOCK_SIZE = 64;
 inline constexpr BYTE  V_MEMORY = 0x00;
 inline constexpr BYTE  NV_MEMORY = 0x01;
 inline constexpr BYTE  KEYA_SELECT = 0X60;
 inline constexpr BYTE  KEYB_SELECT = 0X61;
 inline constexpr BYTE  readUIDCommand[] = {0xFF, 0xCA, 0x00, 0x00, 0x00};
 inline constexpr BYTE  loadKeyCommand[] = {0xFF, 0x82, 0x00};
-inline constexpr BYTE  authCommand[] = {0xFF, 0x86, 0x00, 0x00, 0x05, 0x00, 0x00};
+inline constexpr BYTE  authCommand[] = {0xFF, 0x86, 0x00, 0x00, 0x05, 0x01, 0x00};
 inline constexpr BYTE  readBlockDataCommand[] = {0xFF, 0xB0, 0x00};
 inline constexpr BYTE  writeBlockDataCommand[] = {0xFF, 0xD6, 0x00};
 inline constexpr BYTE  SUCCESS_RESPONSE[] = {0x90,0x00};
@@ -34,10 +36,10 @@ inline constexpr BYTE  DECREMENT_SELECT = 0xC0;
 inline constexpr BYTE  TRANSPORT_CONFIG[] = {0x00};
 
 
-inline constexpr BYTE mask0{ 0x1 }; // hex for 0000 0001
-inline constexpr BYTE mask1{ 0x2 }; // hex for 0000 0010
-inline constexpr BYTE mask2{ 0x4 }; // hex for 0000 0100
-inline constexpr BYTE mask3{ 0x8 }; // hex for 0000 1000
+inline constexpr BYTE mask0{ 0x01 }; // hex for 0000 0001
+inline constexpr BYTE mask1{ 0x02 }; // hex for 0000 0010
+inline constexpr BYTE mask2{ 0x04 }; // hex for 0000 0100
+inline constexpr BYTE mask3{ 0x08 }; // hex for 0000 1000
 inline constexpr BYTE mask4{ 0x10 }; // hex for 0001 0000
 inline constexpr BYTE mask5{ 0x20 }; // hex for 0010 0000
 inline constexpr BYTE mask6{ 0x40 }; // hex for 0100 0000

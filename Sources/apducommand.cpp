@@ -10,6 +10,7 @@ APDUCommand::APDUCommand()
     ,m_ReadCommand[READCOMMAND_SIZE] = {}
     ,m_WriteCommand[WRITECOMMAND_SIZE] = {};
 
+
 }
 
 void APDUCommand::setLoadKeyCommand(const BYTE* key, const BYTE storageAddress)
@@ -135,7 +136,8 @@ void APDUCommand::setWriteCommand(const BYTE block, const BYTE *writeCmd)
             m_WriteCommand[i] = *(writeCmd+i-5);
             break;
          }
-        printf("%X ",m_WriteCommand[i]);
+        qDebug() << m_WriteCommand[i]
+                    ;
     }
 
 }
@@ -210,4 +212,13 @@ void APDUCommand::setIncDecCommand(const BYTE selection, const BYTE block)
 BYTE* APDUCommand::getIncrDecrCommand()
 {
     return m_IncrDecrCommand;
+}
+void APDUCommand::setSectorTrailerBlock(const BYTE* accessBits)
+{
+    for(DWORD i = KEY_SIZE; i< KEY_SIZE + 4 ; i++ )
+        m_sectorTrailerBlock[i] = *(accessBits+i-KEY_SIZE);
+}
+BYTE* APDUCommand::getSectorTrailerBlock()
+{
+    return m_sectorTrailerBlock;
 }

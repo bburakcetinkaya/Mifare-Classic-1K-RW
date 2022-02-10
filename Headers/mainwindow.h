@@ -5,6 +5,7 @@
 #include <QString>
 #include <winscard.h>
 #include <Headers/commands.h>
+#include <cstdint>
 
 QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
@@ -15,6 +16,7 @@ class MainWindow : public QMainWindow
     Q_OBJECT
     QString text_;
 
+
 public:
     MainWindow(QWidget *parent = nullptr);
     ~MainWindow();
@@ -24,7 +26,7 @@ public:
     void printRawTable(const QVector<QStringList> &dataList, const bool formatSelect);
     QVector<QStringList> authAndReadAllData(const QByteArray &_keyBytes,const BYTE &storageSelect,
                                                                         const BYTE &keySelect);
-
+    void constructAccessBits();
 private slots:
 
     void on_connectReader_clicked();
@@ -122,6 +124,16 @@ private slots:
 
     void on_commandsClear_clicked();
 
+    void on_readAccessConditions_clicked();
+
+    void on_accessConditionST_currentIndexChanged(int index);
+
+    void on_accessConditionDB_currentIndexChanged(int index);
+
+    void on_accessConditionDBChange_clicked();
+
+    void on_accessConditionSTChange_clicked();
+
 signals:
     //void listFromTextWindow(QStringList dataList);
 
@@ -141,6 +153,9 @@ private:
     QString m_keyA;
     QString m_keyB;
     QString m_utilityKey;
+    uint8_t m_sectorTrailer[BLOCK_SIZE];
+
+    BYTE m_accessBits[ACCESSBITS_SIZE] = {0xFF,0x07,0x80};
 
 };
 #endif // MAINWINDOW_H

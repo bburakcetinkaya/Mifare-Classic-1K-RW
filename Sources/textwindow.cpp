@@ -119,6 +119,7 @@ void TextWindow::clearTextWindowText()
 
 void TextWindow::on_textWindowCancel_clicked()
 {
+    ui->textWindowText->clear();
     this->close();
 }
 

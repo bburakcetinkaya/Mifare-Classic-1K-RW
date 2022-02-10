@@ -14,29 +14,29 @@ enum choice
 class SCardConnection
 {
 public:
-    static SCardConnection* getInstance();
-    LONG establishContext();
-    void disconnectReader();
+    static  SCardConnection* getInstance();
+    LONG    establishContext();
+    void    disconnectReader();
 
-    void clearpmszReaders();
-    void setReaderLists();
+    void    clearpmszReaders();
+    LONG    setReaderLists();
     LPTSTR  getReaderLists();
-    void connectCard();
-    void disconnectCard();
-    void setCardUID();
+    LONG    connectCard();
+    LONG    disconnectCard();
+    LONG    setCardUID();
     QString getCardUID();
-    BYTE getpbRecv();
-    BYTE getpbSend();
-    DWORD getcbRecv();
-    DWORD getcbSend();
+    QString getReadDataBlockString();
 
-    BYTE getBlockNum();
-    void setBlockNum(const QString &blockAsString);
+    BYTE    getBlockNum();
+    void    setBlockNum(const QString &blockAsString);
 
-    LONG authenticate(BYTE *authCommand);
-    QString readDataBlock(BYTE *readCommand);
-    LONG loadKey(BYTE *loadCommand);
-    LONG writeDataBlock(BYTE *writeCommand);
+    LONG    authenticate(BYTE *authCommand);
+    LONG    readDataBlock(BYTE *readCommand);
+    LONG    loadKey(BYTE *loadCommand);
+    LONG    writeDataBlock(BYTE *writeCommand);
+
+    void    setResponse(BYTE* response);
+    BYTE*   getResponse();
 
 
 
@@ -57,7 +57,9 @@ private:
     BYTE            m_pbRecv[MAX_APDU_SIZE];
     BYTE            m_blockNum;
     int             m_readFlag;
+    QString         m_blockDataString;
     QList<QString>  m_readerList;
+    BYTE            m_response[RESPONSE_SIZE];
 
 };
 
