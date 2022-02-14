@@ -27,6 +27,31 @@ public:
     QVector<QStringList> authAndReadAllData(const QByteArray &_keyBytes,const BYTE &storageSelect,
                                                                         const BYTE &keySelect);
     void constructAccessBits();
+    void constructKeys(const BYTE select);
+
+    void availability(uint8_t RCframe,uint8_t UIDframe, uint8_t tabs,
+                      uint8_t keyAframe, uint8_t keyBframe, uint8_t RWframe, uint8_t VBframe,
+                      uint8_t ACframe, uint8_t utilityChangeKeyFrame);
+//    void setRCFrameEnable(uint8_t selection);
+//    void setUIDFrameEnable(uint8_t selection);
+
+//    void settabsEnable(uint8_t selection);
+//        void setOperationsEnable(uint8_t selection);
+//            void setKeyAFrameEnable(uint8_t selection);
+//            void setKeyBFrameEnable(uint8_t selection);
+//            void setRWFrameEnable(uint8_t selection);
+//            void setVBFrameEnable(uint8_t selection);
+
+//        void setUtilityEnable(uint8_t selection);
+
+
+
+
+//    void setKeyBFrameEnable(uint8_t selection);
+//    void setKeyBFrameEnable(uint8_t selection);
+//    void setKeyBFrameEnable(uint8_t selection);
+//    void setKeyBFrameEnable(uint8_t selection);
+//    void setKeyBFrameEnable(uint8_t selection);
 private slots:
 
     void on_connectReader_clicked();
@@ -94,7 +119,7 @@ private slots:
     void applyDataFromTextWindowToKeyA();
     void applyDataFromTextWindowToUtilityKey();
 
-    void on_valueBlockWrite_clicked();
+    void on_writeVB_clicked();
     void on_valueBlockInit_textChanged();
 
     void on_readVB_clicked();
@@ -114,27 +139,23 @@ private slots:
     void on_utilityKCChange_clicked();
 
     void on_blockSelect_valueChanged(int arg1);
-    void on_sectorSelect_valueChanged(int arg1);
 
     void on_sectorBegin_valueChanged(int arg1);
-
     void on_sectorEnd_valueChanged(int arg1);
-
-
 
     void on_commandsClear_clicked();
 
     void on_readAccessConditions_clicked();
-
     void on_accessConditionST_currentIndexChanged(int index);
-
     void on_accessConditionDB_currentIndexChanged(int index);
-
     void on_accessConditionDBChange_clicked();
-
     void on_accessConditionSTChange_clicked();
 
     void on_utilityKCTextClear_clicked();
+
+    void on_transferVB_clicked();
+    void on_restoreVB_clicked();
+
 
 signals:
     //void listFromTextWindow(QStringList dataList);

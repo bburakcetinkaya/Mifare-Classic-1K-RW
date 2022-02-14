@@ -1,5 +1,6 @@
 #include "Headers/mainwindow.h"
 #include "Sources/mainwindow.cpp"
+#include "Headers/commands.h"
 // get input
 QString MainWindow::getKeyA()
 {
@@ -964,7 +965,7 @@ void MainWindow::on_utilityKC0_textChanged()
 void MainWindow::on_valueBlockInit_textChanged()
 {
     QString text = ui->R0->toPlainText().toUpper();
-    text.replace(QRegExp("[^0-F]"), "") ;
+    text.replace(QRegExp("[^0-9]"), "") ;
     QStringList tokens;
         for(int i = 0; i < text.length(); i += 2)
         {
@@ -1025,9 +1026,7 @@ void MainWindow::applyDataToReadBLocks(const QStringList &dataList)
     ui->R4 ->setText(dataList.at(11));
     ui->R3 ->setText(dataList.at(12));
     ui->R2 ->setText(dataList.at(13));
-    //ui->R1->setEnabled(choice::set);
     ui->R1 ->setText(dataList.at(14));
-    //ui->R0->setEnabled(choice::set);
     ui->R0 ->setText(dataList.at(15));
     QString dataStr = dataList.join(' ');
     QString textValue = QString::fromLocal8Bit(QByteArray::fromHex(dataStr.toLatin1()));
@@ -1074,9 +1073,7 @@ void MainWindow::applyDataFromTextWindow()
     ui->R4 ->setText(dataList.at(11));
     ui->R3 ->setText(dataList.at(12));
     ui->R2 ->setText(dataList.at(13));
-    //ui->R1->setEnabled(choice::set);
     ui->R1 ->setText(dataList.at(14));
-    //ui->R0->setEnabled(choice::set);
     ui->R0 ->setText(dataList.at(15));
 
 }
@@ -1095,10 +1092,8 @@ void MainWindow::applyDataFromTextWindowToUtilityKey()
 void MainWindow::on_blockSelect_valueChanged(int arg1)
 {
      ui->sectorSelect->setValue(arg1/4);
-}
-void MainWindow::on_sectorSelect_valueChanged(int arg1)
-{
-
+     ui->utilitySector->setText(QString::number(arg1/4));
+     ui->utilityBlock->setText(QString::number(arg1));
 }
 
 void MainWindow::on_sectorBegin_valueChanged(int arg1)
@@ -1138,50 +1133,124 @@ void MainWindow::on_RWClear_clicked()
 }
 void MainWindow::on_decVB_clicked()
 {
-    SCardConnection* connect = SCardConnection::getInstance();
     APDUCommand apdu{};
-
+    SCardConnection* connect = SCardConnection::getInstance();
     QString blockString = (ui->blockSelect->text());
+
     connect->setBlockNum(blockString);
-    apdu.setIncDecCommand(DECREMENT_SELECT, connect->getBlockNum());
-    LONG lRet = connect->incrDecrValueBlock(apdu.getIncrDecrCommand());
-    BYTE* response = connect->getResponse();
+    apdu.setReadValueBlockCommand(connect->getBlockNum());
+
+    QString valueStr;
+    LONG lRet = connect->readValueBlock(apdu.getReadCommand());
+    BYTE *response = connect->getResponse();
     if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
+        {
+            ui->statusVB->setText("Failed to decrement!");
+            ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
+            return;
+        }
+    else
+       {
+        int receivedData = (connect->getValue()-1);
+        qDebug() << receivedData;
+        valueStr = QString::number(receivedData);
+        ui->textVB->setText(valueStr);
+
+        }
+    QString valueHexStr;
+    valueHexStr.setNum(valueStr.toInt(),16);
+    if(valueHexStr.length() %2)   valueHexStr.insert(0,QLatin1String("0"));
+    valueHexStr = valueHexStr.toUpper();
+    QByteArray blockHexByteArray = QByteArray::fromHex(valueHexStr.toLatin1());
+    BYTE valueNum[4]{0x00, 0x00, 0x00, 0x00};
+    std::reverse(blockHexByteArray.begin(),blockHexByteArray.end());
+    qDebug() << blockHexByteArray;
+    qDebug() << blockHexByteArray.length();
+//    qDebug() <<
+    for( int i = 0; i<blockHexByteArray.length();i++)
     {
-        ui->statusVB->setText("Failed  to decrement !");
-        ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
-         ui->commandTextWindow->append("DecrementValueBlock();");
-        return;
+        valueNum[i] |= (BYTE)blockHexByteArray[i];
+
     }
 
-            ui->statusVB->setText("Value decremented successfully.");
-            ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : green; }");
-            ui->commandTextWindow->append("DecrementValueBlock();");
+
+    connect->setBlockNum(blockString);
+
+    apdu.setValueBlockCommand(connect->getBlockNum(),valueNum);
+    lRet = connect->writeDataBlock(apdu.getWriteCommand());
+    response = connect->getResponse();
+    if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
+    {
+      ui->statusVB->setText("Failed to decrement and write value block!");
+      ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
+      ui->commandTextWindow->append("FormatAsValueBlockWAndIncrement()");
+      return;
+    }
+    ui->statusVB->setText("Succesfully decremented and written as value block.");
+    ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : green; }");
+    ui->commandTextWindow->append("FormatAsValueBlockWAndIncrement()");
+
 }
 void MainWindow::on_incVB_clicked()
 {
-    SCardConnection* connect = SCardConnection::getInstance();
     APDUCommand apdu{};
-
+    SCardConnection* connect = SCardConnection::getInstance();
     QString blockString = (ui->blockSelect->text());
+
     connect->setBlockNum(blockString);
-    //apdu.setIncDecCommand(INCREMENT_SELECT, connect->getBlockNum());
-    LONG lRet = connect->incrDecrValueBlock(apdu.getIncrDecrCommand());
-    BYTE* response = connect->getResponse();
+    apdu.setReadValueBlockCommand(connect->getBlockNum());
+
+    QString valueStr;
+    LONG lRet = connect->readValueBlock(apdu.getReadCommand());
+    BYTE *response = connect->getResponse();
     if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
+        {
+            ui->statusVB->setText("Failed to increment!");
+            ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
+            return;
+        }
+    else
+       {
+        int receivedData = (connect->getValue()+1);
+        qDebug() << receivedData;
+        valueStr = QString::number(receivedData);
+        ui->textVB->setText(valueStr);
+
+        }
+    QString valueHexStr;
+    valueHexStr.setNum(valueStr.toInt(),16);
+    if(valueHexStr.length() %2)   valueHexStr.insert(0,QLatin1String("0"));
+    valueHexStr = valueHexStr.toUpper();
+    QByteArray blockHexByteArray = QByteArray::fromHex(valueHexStr.toLatin1());
+    BYTE valueNum[4]{0x00, 0x00, 0x00, 0x00};
+    std::reverse(blockHexByteArray.begin(),blockHexByteArray.end());
+    qDebug() << blockHexByteArray;
+    qDebug() << blockHexByteArray.length();
+//    qDebug() <<
+    for( int i = 0; i<blockHexByteArray.length();i++)
     {
-        ui->statusVB->setText("Failed  to increment !");
-        ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
-         ui->commandTextWindow->append("IncrementValueBlock();");
-        return;
+        valueNum[i] |= (BYTE)blockHexByteArray[i];
+
     }
 
-            ui->statusVB->setText("Value incremented successfully.");
-            ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : green; }");
-            ui->commandTextWindow->append("IncrementValueBlock();");
+
+    connect->setBlockNum(blockString);
+
+    apdu.setValueBlockCommand(connect->getBlockNum(),valueNum);
+    lRet = connect->writeDataBlock(apdu.getWriteCommand());
+    response = connect->getResponse();
+    if(((lRet != SCARD_S_SUCCESS) || (*(response) != SUCCESS_RESPONSE[0]) || (*(response+1) != SUCCESS_RESPONSE[1])))
+    {
+      ui->statusVB->setText("Failed to increment and write value block!");
+      ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : red; }");
+      ui->commandTextWindow->append("FormatAsValueBlockWAndIncrement()");
+      return;
+    }
+    ui->statusVB->setText("Succesfully incremented and written as value block.");
+    ui->statusVB->setStyleSheet("QLabel#statusVB {font-weight: bold; color : green; }");
+    ui->commandTextWindow->append("FormatAsValueBlockWAndIncrement()");
+
 }
-
-
 void MainWindow::on_utilityKCText_clicked()
 {
     TextWindow* txtwnd = TextWindow::getInstance();
@@ -1207,3 +1276,99 @@ void MainWindow::on_utilityKCTextClear_clicked()
     ui->utilityKC4->clear();
     ui->utilityKC5->clear();
 }
+
+void MainWindow::constructKeys(const BYTE select)
+{
+    BYTE keyA[KEY_SIZE];
+    BYTE keyB[KEY_SIZE];
+    if(select == KEYA_SELECT)
+    {
+        MainWindow::setUtilityKey();
+        QString _keyA = MainWindow::getUtilityKey();
+        QByteArray _keyBytes = QByteArray::fromHex(_keyA.toLatin1());
+            for( int i=0 ; i<static_cast<int>(KEY_SIZE) ; i++ )
+            {
+                keyA[i] = _keyBytes[i];
+                m_sectorTrailer[i] = keyA[i];
+            }
+    }
+    if(select == KEYB_SELECT)
+    {
+        MainWindow::setUtilityKey();
+        QString _keyB = MainWindow::getUtilityKey();
+        QByteArray _keyBytes = QByteArray::fromHex(_keyB.toLatin1());
+            for( int i=0 ; i<=static_cast<int>(KEY_SIZE) ; i++ )
+            {
+                keyB[i] = _keyBytes[i];
+            }
+            for( int i=0 ; i<=static_cast<int>(KEY_SIZE) ; i++ )
+            {
+                m_sectorTrailer[i+10] = keyB[i];
+            }
+    }
+}
+void MainWindow::availability(uint8_t RCframe,uint8_t UIDframe, uint8_t tabs,
+                  uint8_t keyAframe, uint8_t keyBframe, uint8_t RWframe, uint8_t VBframe,
+                  uint8_t ACframe, uint8_t utilityChangeKeyFrame)
+{
+    ui->RCframe->setEnabled(RCframe & mask7);
+            ui->connectReader->setEnabled(RCframe & mask6);
+            ui->disconnectReader->setEnabled(RCframe & mask5);
+
+        ui->UIDframe->setEnabled(UIDframe & mask7);
+            ui->ConnectUID->setEnabled(UIDframe & mask6);
+            ui->disconnectUID->setEnabled(UIDframe & mask5);
+
+        ui->tabs->setEnabled(tabs & mask7);
+            ui->Operations->setEnabled(tabs & mask6);
+                ui->keyAframe->setEnabled(keyAframe & mask7);
+                    ui->authWithKeyA->setEnabled(keyAframe & mask6);
+                    ui->copyToKeyB->setEnabled(keyAframe & mask5);
+                    ui->factoryKeyA->setEnabled(keyAframe & mask4);
+                    ui->loadTo0A->setEnabled(keyAframe & mask3);
+                    ui->loadTo1A->setEnabled(keyAframe & mask2);
+                    ui->textKeyA->setEnabled(keyAframe & mask1);
+                ui->keyBframe->setEnabled(keyBframe & mask7);
+                    ui->authWithKeyB->setEnabled(keyBframe & mask6);
+                    ui->copyToKeyA->setEnabled(keyBframe & mask5);
+                    ui->factoryKeyB->setEnabled(keyBframe & mask4);
+                    ui->loadTo0B->setEnabled(keyBframe & mask3);
+                    ui->loadTo1B->setEnabled(keyBframe & mask2);
+                    ui->textKeyB->setEnabled(keyBframe & mask1);
+                ui->RWframe->setEnabled(RWframe & mask7);
+                    ui->RWClear->setEnabled(RWframe & mask6);
+                    ui->readBlock->setEnabled(RWframe & mask5);
+                    ui->textRWblocks->setEnabled(RWframe & mask4);
+                    ui->writeBlock->setEnabled(RWframe & mask3);
+                ui->SBframe->setEnabled(tabs & mask2);
+                ui->VBframe->setEnabled(VBframe & mask7);
+                    ui->decVB->setEnabled(VBframe & mask6);
+                    ui->incVB->setEnabled(VBframe & mask5);
+                    ui->destinationBlockSelect->setEnabled(VBframe & mask4);
+                    ui->restoreVB->setEnabled(VBframe & mask3);
+                    ui->transferVB->setEnabled(VBframe & mask2);
+                    ui->writeVB->setEnabled(VBframe & mask1);
+
+            ui->RAW->setEnabled(tabs & mask5);
+
+            ui->Utility->setEnabled(tabs & mask4);
+                ui->utilityBlockFrame->setEnabled(tabs & mask1);
+                    ui->readAccessConditions->setEnabled(tabs & mask0);
+
+                ui->ACframe->setEnabled(ACframe & mask7);
+                    ui->accessCondition->setEnabled(ACframe & mask6);
+                    ui->accessConditionDB->setEnabled(ACframe & mask5);
+                    ui->accessConditionDBChange->setEnabled(ACframe & mask4);
+                    ui->accessConditionST->setEnabled(ACframe & mask3);
+                    ui->accessConditionSTChange->setEnabled(ACframe & mask2);
+                    ui->accessConditionSTRead->setEnabled(ACframe & mask1);
+                ui->utilityChangeKeyFrame->setEnabled(utilityChangeKeyFrame & mask7);
+                    ui->utilityKCTextClear->setEnabled(utilityChangeKeyFrame & mask6);
+                    ui->utilityKCChange->setEnabled(utilityChangeKeyFrame & mask5);
+               ui->utilityKeySelectFrame->setEnabled(utilityChangeKeyFrame & mask4);
+            ui->Commands->setEnabled(tabs & mask3);
+}
+
+
+
+

@@ -15,6 +15,7 @@ class SCardConnection
 {
 public:
     static  SCardConnection* getInstance();
+    static SCardConnection* getInstanceNew();
     LONG    establishContext();
     void    disconnectReader();
 

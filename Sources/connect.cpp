@@ -15,6 +15,14 @@ SCardConnection* SCardConnection::getInstance()
    }
    return(instance);
 }
+SCardConnection* SCardConnection::getInstanceNew()
+{
+    if(instance != NULL){
+       delete instance;
+    }
+    instance = new SCardConnection();
+    return instance;
+}
 SCardConnection::SCardConnection()
 {
     m_readerList = {}
@@ -43,6 +51,7 @@ void SCardConnection::disconnectReader()
 LONG SCardConnection::setReaderLists()
 {
     m_lRet = SCardListReaders(m_hContext, NULL, (LPTSTR)&m_pmszReaders, &m_cch);
+
     return m_lRet;
 }
 LPTSTR SCardConnection::getReaderLists()
@@ -177,12 +186,12 @@ LONG SCardConnection::readValueBlock(BYTE* readValueBlockCommand)
 }
 LONG SCardConnection::incrDecrValueBlock(BYTE* incrDecrCommand)
 {
-    BYTE command[19] = {};
-    for(int i = 0; i<static_cast<int>(19); i++) command[i] = *(incrDecrCommand+i);
+    BYTE command[INCDECCOMMAND_SIZE] = {};
+    for(int i = 0; i<static_cast<int>(INCDECCOMMAND_SIZE); i++) command[i] = *(incrDecrCommand+i);
 
     for(int i = 0; i<static_cast<int>(MAX_APDU_SIZE); i++) m_pbRecv[i] = 0x00; // clear recieve var
 
-    memcpy(m_pbSend, command, 19); m_cbSend = 19; m_cbRecv = MAX_APDU_SIZE;
+    memcpy(m_pbSend, command, INCDECCOMMAND_SIZE); m_cbSend = INCDECCOMMAND_SIZE; m_cbRecv = MAX_APDU_SIZE;
     m_lRet = SCardTransmit(m_hCard, SCARD_PCI_T1, m_pbSend, m_cbSend, NULL, m_pbRecv, &m_cbRecv);
 
 
@@ -218,6 +227,7 @@ LONG SCardConnection::writeDataBlock(BYTE *writeCommand)
     for(int i = 0; i<static_cast<int>(WRITECOMMAND_SIZE); i++)
         {
             command[i] = *(writeCommand+i);
+            qDebug() << command[i];
         }
     memcpy(m_pbSend, command, WRITECOMMAND_SIZE); m_cbSend = WRITECOMMAND_SIZE; m_cbRecv = MAX_APDU_SIZE;
     m_lRet = SCardTransmit(m_hCard, SCARD_PCI_T1, m_pbSend, m_cbSend, NULL, m_pbRecv, &m_cbRecv);

@@ -6,8 +6,11 @@
 
 SCardOperations::SCardOperations()
 {
-    m_keyA[KEY_SIZE] = {}
-   ,m_keyB[KEY_SIZE] = {};
+    for(int i = 0; i<static_cast<int>(KEY_SIZE);i++)
+    {
+    m_keyA[i] = {};
+    m_keyB[i] = {};
+    }
 }
 
 void SCardOperations::setKeyA( const BYTE *_keyA )

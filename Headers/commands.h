@@ -15,7 +15,7 @@ inline constexpr DWORD READCOMMAND_SIZE = 5;
 inline constexpr DWORD ACCESSBITS_SIZE = 3;
 inline constexpr BYTE  LOADCOMMAND_SIZE = 0x0B;
 inline constexpr DWORD WRITECOMMAND_SIZE = 21;
-inline constexpr DWORD  DECINCCOMMAND_SIZE = 11;
+inline constexpr DWORD  INCDECCOMMAND_SIZE = 9;
 inline constexpr DWORD BLOCK_SIZE = 16;
 inline constexpr DWORD TOTALBLOCK_SIZE = 64;
 inline constexpr BYTE  V_MEMORY = 0x00;
@@ -31,9 +31,10 @@ inline constexpr BYTE  SUCCESS_RESPONSE[] = {0x90,0x00};
 inline constexpr BYTE  readValueBlock[] = {0xFF, 0xB1, 0x00};
 inline constexpr BYTE  incDecCommand1[] = { 0xFF, 0xFC, 0x00, 0x00, 0x06};
 inline constexpr BYTE  incDecCommand2[] = { 0x01, 0x00, 0x00, 0x00};
+
 inline constexpr BYTE  RESTORE_SELECT = 0xC2;
-inline constexpr BYTE  INCREMENT_SELECT = 0xC1;
-inline constexpr BYTE  DECREMENT_SELECT = 0xC0;
+inline constexpr BYTE  INCREMENT_SELECT = 0xD4;
+inline constexpr BYTE  DECREMENT_SELECT = 0xD8;
 inline constexpr BYTE  TRANSPORT_CONFIG[] = {0x00}; //???
 
 
@@ -45,6 +46,14 @@ inline constexpr BYTE mask4{ 0x10 }; // hex for 0001 0000
 inline constexpr BYTE mask5{ 0x20 }; // hex for 0010 0000
 inline constexpr BYTE mask6{ 0x40 }; // hex for 0100 0000
 inline constexpr BYTE mask7{ 0x80 }; // hex for 1000 0000
+
+
+
+
+
+
+
+
 //#Prepare Block as value block (Block No. : 1E, Value : 64000000)
 //FF D6 00 1E 10 64 00 00 00 9B FF FF FF 64 00 00 00 00 FF 00 FF
 //#Value Increment (Block No. : 1E, Increment by 1)
